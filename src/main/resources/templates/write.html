@@ -7,9 +7,9 @@
     <!-- 부트스트랩 js 사용 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/backgroundboard.css">
+    <link rel="stylesheet" type="text/css" href="/css/background.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>첫 페이지</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
@@ -33,7 +33,7 @@
                 <a class="nav-link" href="/board">Board</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/">햄스터세상</a>
+                <a class="nav-link" href="/test">boot strap test하는곳입니다.</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,31 +56,5 @@
         </form>
     </div>
 </nav>
-
-<hr>
-
-<table class="table table-dark table-striped table-hover">
-    <thead>
-    <tr>
-        <th scope="col">게시판 번호</th>
-        <th scope="col">제목</th>
-        <th scope="col">작성자</th>
-        <th scope="col">조회수</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="board : ${Board}">
-        <th scope="row" th:text="${board.BoardNumber}">1</th>
-        <td><a th:text="${board.BoardTitle}" href="/">안녕하세요 테스트 게시판입니다.</a></td>
-        <td th:text="${board.BoardNumber}">hamster</td>
-        <td th:text="${board.BoardView}">234</td>
-    </tr>
-    </tbody>
-</table>
-
-<div id="wrap-upper">
-    <button type="button" class="btn btn-secondary" id="post-button" onclick="location.href='/write'">글쓰기</button>
-</div>
-
 </body>
 </html>

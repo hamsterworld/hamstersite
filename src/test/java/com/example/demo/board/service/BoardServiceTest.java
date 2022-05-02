@@ -2,6 +2,7 @@ package com.example.demo.board.service;
 
 import com.example.demo.dao.Dao;
 import com.example.demo.dto.Board;
+import com.example.demo.dto.BoardWriteForm;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,20 @@ class BoardServiceTest {
         assertThat(BoardSearch).isNotNull();
 
     }
+
+
+    @Test
+    public void BoardWrite(){
+
+        BoardWriteForm boardWriteForm = new BoardWriteForm();
+        boardWriteForm.setUserNumber(10L);
+        boardWriteForm.setBoardTitle("이것도 테스트 데이터 입니다.");
+        boardWriteForm.setBoardContent("이건 테스트데이터의 내용입니다.");
+
+        dao.boardwrite(boardWriteForm);
+
+
+    }
+
 
 }

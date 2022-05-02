@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.dto.Board;
+import com.example.demo.dto.BoardWriteForm;
 import com.example.demo.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -145,6 +146,40 @@ public class DaoImpl implements Dao{
     }
 
 
+
+    public void boardwrite(BoardWriteForm boardWriteForm){
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        String sql = "insert into board values(member_seq.nextval,?,?,0,?)";
+
+
+        try {
+
+            con = getConnection(dataSource);
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setLong(3, boardWriteForm.getUserNumber());
+            pstmt.setString(1, boardWriteForm.getBoardTitle());
+            pstmt.setString(2, boardWriteForm.getBoardContent());
+
+            pstmt.executeUpdate();
+
+
+        } catch (SQLException e) {
+             e.printStackTrace();
+        } finally {
+             close(con, pstmt, null);
+        }
+
+
+    }
+
+
+
+
+
     private void close(Connection con,PreparedStatement stmt,ResultSet rs) {
         JdbcUtils.closeResultSet(rs);
         JdbcUtils.closeStatement(stmt);
@@ -158,5 +193,7 @@ public class DaoImpl implements Dao{
 
         return con;
     }
+
+
 
 }

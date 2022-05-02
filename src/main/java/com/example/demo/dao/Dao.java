@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import com.example.demo.dto.Board;
+import com.example.demo.dto.BoardWriteForm;
 import com.example.demo.dto.User;
 
 import java.util.ArrayList;
@@ -16,5 +17,8 @@ public interface Dao {
 
     //게시판 전체 조회
     public ArrayList<Board> boardsearch();
+
+    //게시판 글쓰기
+    public void boardwrite(BoardWriteForm boardWriteForm);
 
 }

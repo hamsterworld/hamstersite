@@ -3,6 +3,7 @@ package com.example.demo.board.service;
 
 import com.example.demo.dao.Dao;
 import com.example.demo.dto.Board;
+import com.example.demo.dto.BoardWriteForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,12 @@ public class BoardService {
 
     }
 
+
+    public void BoardWrite(BoardWriteForm boardWriteForm){
+
+        dao.boardwrite(boardWriteForm);
+
+    }
 
 
 }
