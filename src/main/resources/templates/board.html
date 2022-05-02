@@ -69,23 +69,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <th scope="row">1</th>
-        <td>안녕하세요 테스트 게시판입니다.</td>
-        <td>hamster</td>
-        <td>234</td>
-    </tr>
-    <tr>
-        <th scope="row">2</th>
-        <td>안녕하세요 테스트 게시판2입니다.</td>
-        <td>hamster</td>
-        <td>456</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td>안녕하세요 테스트3입니다.</td>
-        <td>hmaster</td>
-        <td>34354</td>
+    <tr th:each="board : ${Board}">
+        <th scope="row" th:text="${board.BoardNumber}">1</th>
+        <td><a th:text="${board.BoardTitle}" href="/">안녕하세요 테스트 게시판입니다.</a></td>
+        <td th:text="${board.BoardNumber}">hamster</td>
+        <td th:text="${board.BoardView}">234</td>
     </tr>
     </tbody>
 </table>

@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import com.example.demo.dto.Board;
 import com.example.demo.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
@@ -93,9 +95,54 @@ public class DaoImpl implements Dao{
         return null;
     }
 
+    @Override
+    public ArrayList<Board> boardsearch() {
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        ArrayList<Board> Boards = new ArrayList<>();
+
+        String sql = "select * from board";
+
+        try{
+
+            con = getConnection(dataSource);
+            pstmt = con.prepareStatement(sql);
+            rs = pstmt.executeQuery();
 
 
+            while(rs.next()) {
 
+                Board board = new Board();
+
+                board.setUserNumber(rs.getLong("UserNumber"));
+                board.setBoardContent(rs.getString("BoardContent"));
+                board.setBoardNumber(rs.getLong("BoardNumber"));
+                board.setBoardView(rs.getLong("BoardView"));
+                board.setBoardTitle(rs.getString("BoardTitle"));
+
+                log.info("너 boardnumber = {} ",board.getBoardNumber());
+
+
+                Boards.add(board);
+
+            }
+
+            return Boards;
+
+        } catch (Exception e){
+
+            e.printStackTrace();
+
+        } finally {
+
+            close(con, pstmt, rs);
+
+        }
+
+        return null;
+    }
 
 
     private void close(Connection con,PreparedStatement stmt,ResultSet rs) {

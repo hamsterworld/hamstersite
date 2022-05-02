@@ -5,19 +5,17 @@ import com.example.demo.dao.DaoImpl;
 import com.example.demo.dto.LoginUserForm;
 import com.example.demo.dto.User;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 
-import javax.sql.DataSource;
-
 import static com.example.demo.ConnectionInfo.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-//import static org.assertj.core.api.Assertions.assertThat;
 
 
+@Slf4j
 class LoginServiceTest {
 
     LoginService loginService;

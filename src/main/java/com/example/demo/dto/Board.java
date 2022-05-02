@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class Board {
 
-    private String BoardNumber;
+    private Long BoardNumber;
     private String BoardTitle;
     private String BoardContent;
-    private String BoardView;
-    private String UserNumber;
+    private Long BoardView;
+    private Long UserNumber;
 
 }
