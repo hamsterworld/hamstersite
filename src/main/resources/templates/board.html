@@ -80,6 +80,13 @@
 
 <div id="wrap-upper">
     <button type="button" class="btn btn-secondary" id="post-button" onclick="location.href='/write'">글쓰기</button>
+    <a th:if="${paging.showPrev}" th:href="@{/board(page=${paging.beginPage - 1},pagesize=${paging.pageSize})}" th:text="Prev"></a>
+    <th:block th:with="start=${paging.beginPage}, end=${paging.endPage}">
+    <th:block th:each=" i : ${#numbers.sequence(start,end)}">
+        <a th:href="@{/board(page=${i},pagesize=${paging.pageSize})}" th:text="${i}"></a>
+    </th:block>
+    </th:block>
+    <a th:if="${paging.showNext}" th:href="@{/board(page=${paging.endPage + 1},pagesize=${paging.pageSize})}" th:text="Next"></a>
 </div>
 
 </body>

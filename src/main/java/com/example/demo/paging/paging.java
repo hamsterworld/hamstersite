@@ -16,10 +16,10 @@ public class paging {
     boolean showNext;
 
 
-    public paging(int totalCnt, int page) {
+    public paging(int totalCnt, int page,int pageSize) {
         this.totalCnt = totalCnt;
         this.page = page;
-        this.pageSize = 10;
+        this.pageSize = pageSize;
 
         totalPage = (int)Math.ceil((double)totalCnt/pageSize);
         beginPage = (page / navSize) * navSize + 1;

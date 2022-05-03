@@ -20,9 +20,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/board")
-    public String Board(Model model){
+    public String Board(Integer page,Integer pagesize,Model model){
 
-        boardService.BoardSee(model);
+        boardService.BoardSee(page,pagesize,model);
 
         log.info("model = {} ",model);
 

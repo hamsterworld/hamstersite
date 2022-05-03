@@ -26,6 +26,9 @@ public interface DtoMapper {
     @Select("select * from board")
     public List<Board> findBoardAll();
 
+    @Select("select count(*) from board")
+    public int findTotalCount();
+
     public List<Board> boardCount(Map map);
 
 
