@@ -5,6 +5,7 @@ import com.example.demo.dto.JoinUserForm;
 import com.example.demo.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +17,22 @@ import java.sql.SQLException;
 public class JoinService {
 
     private final Dao dao;
+    //private final SQLExceptionTranslator translator;
 
     @Transactional
-    public void saveTransfer(JoinUserForm user) throws SQLException {
+    public void saveTransfer(JoinUserForm user) {
 
-       save(user);
+
+          //save(user);
+
+
+        if(user.getNickName().equals("test"))
+            throw new IllegalStateException("으하하 트렌젝션오류 나버렷~");
 
     }
 
 
-    public void save(JoinUserForm user){
+    public void save(JoinUserForm user) throws SQLException{
 
         log.info("user = {}", user);
 

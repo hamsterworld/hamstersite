@@ -1,6 +1,7 @@
 package com.example.demo.board.service;
 
 
+import com.example.demo.Mapper.DtoMapper;
 import com.example.demo.dao.Dao;
 import com.example.demo.dto.Board;
 import com.example.demo.dto.BoardWriteForm;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -17,14 +21,20 @@ import java.util.ArrayList;
 public class BoardService {
 
     private final Dao dao;
+    private final DtoMapper mapper;
+
 
     public void BoardSee(Model model){
 
-        ArrayList<Board> boardsearch = dao.boardsearch();
+        Map map = new HashMap<>();
+        map.put("start",(page-1)*pagesize+1);
+        map.put("end",((page-1)*pagesize+1)+9);
 
-        log.info("boardsearch = {} ",boardsearch);
+        List<Board> boards = mapper.boardCount(map);
 
-        model.addAttribute("Board",boardsearch);
+        log.info("boardsearch = {} ",boards);
+
+        model.addAttribute("Board",boards);
 
     }
 

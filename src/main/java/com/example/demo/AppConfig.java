@@ -2,6 +2,7 @@ package com.example.demo;
 
 
 import com.example.demo.interceptor.LoginInterceptor;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

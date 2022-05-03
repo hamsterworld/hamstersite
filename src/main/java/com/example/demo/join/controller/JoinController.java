@@ -52,7 +52,7 @@ public class JoinController {
 
         log.info("joinservice = {} ", joinService);
 
-        joinService.save(user);
+        //joinService.save(user);
 
         return "redirect:/";
 
