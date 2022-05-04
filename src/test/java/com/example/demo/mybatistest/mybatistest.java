@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @Slf4j
@@ -50,6 +51,41 @@ public class mybatistest {
         log.info("게시물 = {} ",boards);
 
         assertThat(boards).isNotNull();
+
+    }
+    
+    @Test
+    @DisplayName("제대로 들어가는지 확인하기")
+    void InsertBoard(){
+        Board board = new Board();
+        
+        board.setBoardView(0L);
+        board.setBoardTitle("으하하");
+        board.setBoardContent("반갑다. 이건 글쓰기내용이야.");
+        board.setUserNumber(10L);
+
+        int i = mapper.insertBoard(board);
+
+        assertTrue(i == 1);
+
+    }
+
+    @Test
+    @DisplayName("boardsee를 위해 테스트")
+    void seeBoard(){
+
+
+        Board board = mapper.searchOneBoard(54);
+
+        log.info("board = {} ",board);
+
+        User user = mapper.searchOneUser(10L);
+
+        log.info("user = {} ",user);
+
+        assertTrue(board.getBoardNumber() == 54);
+        assertTrue(user.getNickName().equals("귀여운게죄라면난사형"));
+
 
     }
 

@@ -121,7 +121,7 @@ public class DaoImpl implements Dao{
                 board.setBoardContent(rs.getString("BoardContent"));
                 board.setBoardNumber(rs.getLong("BoardNumber"));
                 board.setBoardView(rs.getLong("BoardView"));
-                board.setBoardTitle(rs.getString("BoardTitle"));
+               // board.setBoardTitle(rs.getString("BoardTitle"));
 
                 log.info("너 boardnumber = {} ",board.getBoardNumber());
 

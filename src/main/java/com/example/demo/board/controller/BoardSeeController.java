@@ -2,30 +2,28 @@ package com.example.demo.board.controller;
 
 
 import com.example.demo.board.service.BoardService;
-import com.example.demo.dto.Board;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
-
+@RequiredArgsConstructor
 @Slf4j
 @Controller
-@RequiredArgsConstructor
-public class BoardController {
+public class BoardSeeController {
 
     private final BoardService boardService;
 
-    @GetMapping("/board")
-    public String Board(Integer page,Integer pagesize,Model model){
+    @GetMapping("/board/{BoardNumber}")
+    public String SeeBoard(@PathVariable Integer BoardNumber, Model model){
 
-        boardService.BoardSee(page,pagesize,model);
+        boardService.BoardSee(BoardNumber,model);
 
-        log.info("model = {} ",model);
-
-        return "board";
+        return "boardSee";
     }
+
 
 
 }

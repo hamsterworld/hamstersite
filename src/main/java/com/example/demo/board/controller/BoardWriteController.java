@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
+
 @RequiredArgsConstructor
 @Slf4j
 @Controller
@@ -22,9 +24,9 @@ public class BoardWriteController {
     }
 
     @PostMapping("/write")
-    public String PostWrite(BoardWriteForm boardWriteForm){
+    public String PostWrite(BoardWriteForm boardWriteForm, HttpSession session){
 
-        boardService.BoardWrite(boardWriteForm);
+        boardService.BoardWrite(boardWriteForm,session);
 
         return "board";
 

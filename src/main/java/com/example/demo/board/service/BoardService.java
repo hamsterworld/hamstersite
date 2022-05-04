@@ -5,12 +5,14 @@ import com.example.demo.Mapper.DtoMapper;
 import com.example.demo.dao.Dao;
 import com.example.demo.dto.Board;
 import com.example.demo.dto.BoardWriteForm;
+import com.example.demo.dto.User;
 import com.example.demo.paging.paging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,9 +51,29 @@ public class BoardService {
     }
 
 
-    public void BoardWrite(BoardWriteForm boardWriteForm){
+    public void BoardWrite(BoardWriteForm boardWriteForm, HttpSession session){
 
-        dao.boardwrite(boardWriteForm);
+        User loginUser = (User) session.getAttribute("LoginUser");
+
+        Board board = new Board();
+
+        board.setUserNumber(loginUser.getUserNumber());
+        board.setBoardTitle(board.getBoardTitle());
+        board.setBoardContent(board.getBoardContent());
+        board.setBoardView(0L);
+
+        mapper.insertBoard(board);
+
+    }
+
+    public void BoardSee(int BoardNumber,Model model){
+
+        Board board = mapper.searchOneBoard(BoardNumber);
+
+        User user = mapper.searchOneUser(board.getUserNumber());
+
+        model.addAttribute("Board",board);
+        model.addAttribute("User",user);
 
     }
 

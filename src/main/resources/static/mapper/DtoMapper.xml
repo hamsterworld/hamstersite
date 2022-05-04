@@ -11,5 +11,9 @@
         (SELECT * FROM BOARD ORDER BY boardnumber DESC) A)
         WHERE RN BETWEEN #{start} AND #{end}
     </select>
+    <insert id="insertBoard" parameterType="com.example.demo.dto.Board">
+        insert into board
+        values(board_seq.nextval,#{BoardTitle},#{BoardContent},#{BoardView},#{UserNumber})
+    </insert>
 </mapper>
 
