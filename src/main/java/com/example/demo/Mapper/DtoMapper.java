@@ -31,8 +31,15 @@ public interface DtoMapper {
     public Integer insertBoard(Board board);
 
     @Select("select * from board where BoardNumber = #{BoardNumber}")
-    public Board searchOneBoard(@Param("BoardNumber") int BoardNumber);
+    public Board searchOneBoard(@Param("BoardNumber") Long BoardNumber);
 
     @Select("select * from member where UserNumber = #{UserNumber}")
     public User searchOneUser(@Param("UserNumber") Long UserNumber);
+
+    @Delete("delete from board where BoardNumber = #{BoardNumber}")
+    public int deleteBoard(@Param("BoardNumber") Long boardNumber);
+
+    public int updateBoard(Board board);
+
+
 }

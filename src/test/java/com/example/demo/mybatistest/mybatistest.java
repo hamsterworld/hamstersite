@@ -75,7 +75,7 @@ public class mybatistest {
     void seeBoard(){
 
 
-        Board board = mapper.searchOneBoard(54);
+        Board board = mapper.searchOneBoard(54L);
 
         log.info("board = {} ",board);
 

@@ -17,7 +17,7 @@ public class BoardSeeController {
     private final BoardService boardService;
 
     @GetMapping("/board/{BoardNumber}")
-    public String SeeBoard(@PathVariable Integer BoardNumber, Model model){
+    public String SeeBoard(@PathVariable Long BoardNumber, Model model){
 
         boardService.BoardSee(BoardNumber,model);
 

@@ -66,7 +66,7 @@ public class BoardService {
 
     }
 
-    public void BoardSee(int BoardNumber,Model model){
+    public void BoardSee(Long BoardNumber,Model model){
 
         Board board = mapper.searchOneBoard(BoardNumber);
 
@@ -77,5 +77,26 @@ public class BoardService {
 
     }
 
+    public String boardDelete(Long BoardNumber,HttpSession session){
+
+        User loginUser = (User)session.getAttribute("LoginUser");
+        Board board = mapper.searchOneBoard(BoardNumber);
+        User user = mapper.searchOneUser(board.getUserNumber());
+
+        if(!loginUser.getUserId().equals(user.getUserId())){
+            return "false";
+        }
+
+        int i = mapper.deleteBoard(BoardNumber);
+
+        return "i";
+
+    }
+
+    public void boardUpdate(Board board){
+
+        mapper.updateBoard(board);
+
+    }
 
 }

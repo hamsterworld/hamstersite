@@ -15,5 +15,10 @@
         insert into board
         values(board_seq.nextval,#{BoardTitle},#{BoardContent},#{BoardView},#{UserNumber})
     </insert>
+    <update id="updateBoard" parameterType="com.example.demo.dto.Board">
+        update board
+        set(BoardTitle=${BoardTitle},BoardContent=#{BoardContent})
+        where BoardNumber=${BoardNumber}
+    </update>
 </mapper>
 
