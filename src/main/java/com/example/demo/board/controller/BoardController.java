@@ -23,7 +23,7 @@ public class BoardController {
         boardService.BoardSee(page,pagesize,model);
 
         log.info("model = {} ",model);
-
+        //test
         return "board";
     }
 
