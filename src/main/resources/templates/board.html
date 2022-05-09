@@ -1,95 +1,87 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- 부트스트랩 css 사용 -->
     <link rel="stylesheet" href="/css/bootstrap.css">
     <!-- 부트스트랩 js 사용 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="/js/bootstrap.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/backgroundboard.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/board.css" rel="stylesheet">
+    <title>hamsterworld</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login"
-                   th:if="${session.LoginUser == null}">Login</a>
-                <a class="nav-link" href="/logout"
-                   th:if="${session.LoginUser != null}">Logout</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/board">Board</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/">햄스터세상</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/">Action</a>
-                    <a class="dropdown-item" href="/">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/">Something else here</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="/" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+<div class="join">햄스터월드 - 각종 햄스터자료를 공유하는 곳
+    <div class="joinmenu">
+        <a href="/join">회원가입</a> |
+        <a href="/login" th:if="${session.LoginUser == null}">로그인</a>
+        <a href="/logout" th:if="${session.LoginUser != null}">로그아웃</a>
         </form>
     </div>
-</nav>
-
-<hr>
-
-<table class="table table-dark table-striped table-hover">
-    <thead>
-    <tr>
-        <th scope="col">게시판 번호</th>
-        <th scope="col">제목</th>
-        <th scope="col">작성자</th>
-        <th scope="col">조회수</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="board : ${Board}">
-        <th scope="row" th:text="${board.BoardNumber}">1</th>
-        <td><a th:text="${board.BoardTitle}" th:href="@{/board/${board.BoardNumber}}">안녕하세요 테스트 게시판입니다.</a></td>
-        <td th:text="${board.BoardNumber}">hamster</td>
-        <td th:text="${board.BoardView}">234</td>
-    </tr>
-    </tbody>
-</table>
-
-<div id="wrap-upper">
-    <button type="button" class="btn btn-secondary" id="post-button" onclick="location.href='/write'">글쓰기</button>
-    <a th:if="${paging.showPrev}" th:href="@{/board(page=${paging.beginPage - 1},pagesize=${paging.pageSize})}" th:text="Prev"></a>
-    <th:block th:with="start=${paging.beginPage}, end=${paging.endPage}">
-    <th:block th:each=" i : ${#numbers.sequence(start,end)}">
-        <a th:href="@{/board(page=${i},pagesize=${paging.pageSize})}" th:text="${i}"></a>
-    </th:block>
-    </th:block>
-    <a th:if="${paging.showNext}" th:href="@{/board(page=${paging.endPage + 1},pagesize=${paging.pageSize})}" th:text="Next"></a>
 </div>
-
-
-
+<hr>
+<div class="container">
+    <div class="item"><img src="/image/istockphoto-675804830-612x612.jpg"></div>
+    <div class="searchbar">
+        <input type="text" placeholder="search"><button type="input" class="cefw">검색</button>
+    </div>
+    <nav class="item" id="menu">
+        <ul class="dep1">
+            <li><a href="/">Home</a></li>
+            <li><a href="/board">HamsterBoard</a>
+                <ul class="dep2">
+                    <li><a href="#">정보 게시판</a></li>
+                    <li><a href="#">육아 게시판</a></li>
+                    <li><a href="#">사진 게시판</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Community</a>
+                <ul class="dep2">
+                    <li><a href="#">유머 게시판</a></li>
+                    <li><a href="#">이슈 게시판</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Test</a></li>
+            <li><a href="#">Test2</a></li>
+            <li><a href="#">Test3</a></li>
+        </ul>
+    </nav>
+    <div class="ddd"></div>
+    <div class="tablewrapper">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성날짜</th>
+                <th>작성자</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${Board}">
+                <th scope="row" th:text="${board.BoardNumber}">1</th>
+                <td><a th:text="${board.BoardTitle}" th:href="@{/board/{board.BoardNumber}(board.BoardNumber=${board.BoardNumber},page=${page},pagesize=${paging.pageSize})}">안녕하세요 테스트 게시판입니다.</a></td>
+                <td th:text="${board.BoardNumber}">hamster</td>
+                <td th:text="${board.BoardView}">234</td>
+                <td th:text="${board.BoardView}">234</td>
+            </tr>
+            </tbody>
+        </table>
+        <button type="button" class="writebutton" id="post-button" onclick="location.href='/write'">글쓰기</button>
+        <div class="paging">
+            <a th:if="${paging.showPrev}" th:href="@{/board(page=${paging.beginPage - 1},pagesize=${paging.pageSize})}" th:text="Prev"></a>
+            <th:block th:with="start=${paging.beginPage}, end=${paging.endPage}">
+                <th:block th:each=" i : ${#numbers.sequence(start,end)}">
+                    <a th:href="@{/board(page=${i},pagesize=${paging.pageSize})}" th:text="${i}"></a>
+                </th:block>
+            </th:block>
+            <a th:if="${paging.showNext}" th:href="@{/board(page=${paging.endPage + 1},pagesize=${paging.pageSize})}" th:text="Next"></a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

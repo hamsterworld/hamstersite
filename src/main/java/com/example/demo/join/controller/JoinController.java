@@ -31,8 +31,10 @@ public class JoinController {
     }
 
     @PostMapping("/join")
-    public String PostJoin(@Validated  @ModelAttribute("User") JoinUserForm user,
+    public String PostJoin(@Validated @ModelAttribute("User") JoinUserForm user,
                            BindingResult bindingResult){
+
+        log.info("user = {} ", user);
 
         if(!user.getConfirmedUserPassWord().equals(user.getUserPassWord())){
 

@@ -45,6 +45,7 @@ public class BoardService {
 
         log.info("boardsearch = {} ",boards);
 
+        model.addAttribute("page",page);
         model.addAttribute("Board",boards);
         model.addAttribute("paging",paging);
 
@@ -71,6 +72,9 @@ public class BoardService {
         Board board = mapper.searchOneBoard(BoardNumber);
 
         User user = mapper.searchOneUser(board.getUserNumber());
+
+        if(model.getAttribute("page") == null)
+            model.addAttribute("page",1);
 
         model.addAttribute("Board",board);
         model.addAttribute("User",user);

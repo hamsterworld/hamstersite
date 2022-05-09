@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/boardcss.css" rel="stylesheet">
+    <title>hamsterworld</title>
+</head>
+<body>
+<div class="join">햄스터월드 - 각종 햄스터자료를 공유하는 곳
+    <div class="joinmenu">
+        <a>회원가입</a> |
+        <a>로그인</a>
+    </div>
+</div>
+<hr>
+<div class="container">
+    <div class="item"><img src="/image/istockphoto-675804830-612x612.jpg"></div>
+    <div class="searchbar">
+        <input type="text" placeholder="search"><button type="input">검색</button>
+    </div>
+    <nav class="item" id="menu">
+        <ul class="dep1">
+            <li><a href="/">Home</a></li>
+            <li><a href="/board">HamsterBoard</a>
+                <ul class="dep2">
+                    <li><a href="#">정보 게시판</a></li>
+                    <li><a href="#">육아 게시판</a></li>
+                    <li><a href="#">사진 게시판</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Community</a>
+                <ul class="dep2">
+                    <li><a href="#">유머 게시판</a></li>
+                    <li><a href="#">이슈 게시판</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Test</a></li>
+            <li><a href="#">Test2</a></li>
+            <li><a href="#">Test3</a></li>
+        </ul>
+    </nav>
+    <div class="ddd"></div>
+    <div class="wrapper" th:object="${Board}">
+        <div class="title"><span>제목</span>
+            <span th:text="*{BoardTitle}">제목이 들어갈 장소입니다.</span>
+        </div>
+        <div class="information">
+            <div class="view">
+                <span th:text="${User.NickName}">작성자</span>
+                <span>|</span>
+                <span>2022.05.09 15:38:36</span>
+            </div>
+            <div class="view2">
+                <span th:text="|조회수 ${BoardView}|">조회수 200</span>
+                <span>|</span>
+                <span>추천수 200</span>
+                <span>|</span>
+                <span>댓글 개수 1000</span>
+            </div>
+        </div>
+        <hr class="hr">
+        <div class="content">
+                    <span th:text="*{BoardContent}">
+                        여기에 글내용이 들어갈겁니다.여기에 글내용이 들어갈겁니다.여기에 글내용이 들어갈겁니다.여기에 글내용이 들어갈겁니다.
+                    </span>
+        </div>
+        </th:object>
+        <div>
+            <button type="button" th:onclick="|location.href='@{/board(page=${page},pagesize=${pagesize})}'|">목록으로</button>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

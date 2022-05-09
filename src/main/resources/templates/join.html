@@ -1,101 +1,98 @@
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/Join.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/joinstyle.css">
+    <title>Document</title>
 </head>
 <body>
-<div class="container">
-    <div class="row centered-form">
-        <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Please sign up for HamsterWorld <small>It's free!</small></h3>
-                </div>
-                <div class="panel-body">
-                    <form action="" method="post" th:object="${User}" role="form">
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" th:field="*{UserId}" id="UserId" class="form-control input-sm" placeholder="UserId">
-                                </div>
-                                <div class="field-error" th:errors="*{UserId}">
-                                    아이디 검증
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="button" value="중복 확인" class="btn btn-info btn-block">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" th:field="*{UserName}" id="UserName" class="form-control input-sm" placeholder="UserName">
-                                </div>
-                                <div class="field-error" th:errors="*{UserName}">
-                                    이름 검증
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="text" th:field="*{NickName}" id="NickName" class="form-control input-sm" placeholder="NickName">
-                                </div>
-                                <div class="field-error" th:errors="*{NickName}">
-                                    닉네임 검증
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="button" value="중복 확인" class="btn btn-info btn-block">
-                                </div>
-                            </div>
-                        </div>
+<div id="header">
+    <a href="/" target="_blank" title="홈으로"><span id="logo">
+            hamster world
+        </span></a>
+</div>
 
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="password" th:field="*{UserPassWord}" id="UserPassWord" class="form-control input-sm" placeholder="Password">
-                                </div>
-                                <div class="field-error" th:errors="*{UserPassWord}">
-                                    비밀번호 검증
-                                </div>
-                                <div th:if="${#fields.hasGlobalErrors()}">
-                                    <p class="field-error" th:each="err : ${#fields.globalErrors()}"
-                                       th:text="${err}">글로벌 오류 메시지</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="form-group">
-                                    <input type="password" th:field="*{ConfirmedUserPassWord}" id="ConfirmedUserPassWord" class="form-control input-sm" placeholder="Confirm Pw">
-                                </div>
-                                <div class="field-error" th:errors="*{ConfirmedUserPassWord}">
-                                    비밀번호 검증
-                                </div>
-                                <div th:if="${#fields.hasGlobalErrors()}">
-                                    <p class="field-error" th:each="err : ${#fields.globalErrors()}"
-                                       th:text="${err}">글로벌 오류 메시지</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <input type="submit" value="Register" class="btn btn-info btn-block">
-
-                    </form>
-                </div>
-            </div>
+<div id="wrapper">
+    <div id="content" th:object="${User}">
+        <!-- ID-->
+        <div>
+            <form action="/join">
+            <h3 class="join_title">
+                <label for="UserId">아이디</label>
+            </h3>
+            <span class="box int_id">
+                            <input type="text" th:field="*{UserId}" class="int" maxlength="20">
+                        </span>
+            <span class="error_next_box" th:errors="*{UserId}">아이디검증</span>
         </div>
+        <!-- password-->
+        <div>
+            <h3 class="join_title">
+                <label for="UserPassWord">비밀번호</label>
+            </h3>
+            <span class="box int_pass">
+                            <input type="password"  th:field="*{UserPassWord}" class="int" maxlength="20">
+                            <img src="/image/m_icon_pass.png" id="pswd1_img1" class="pswdImg">
+                        </span>
+            <span class="error_next_box" th:errors="*{UserPassWord}">비밀번호 검증</span>
+            <span th:if="${#fields.hasGlobalErrors()}">
+                <p class="error_next_box" th:each="err : ${#fields.globalErrors()}"
+                   th:text="${err}">글로벌 오류 메시지</p>
+            </span>
+        </div>
+
+        <!-- passwordconfirmed-->
+        <div>
+            <h3 class="join_title">
+                <label for="ConfirmedUserPassWord">비밀번호 확인</label>
+            </h3>
+            <span class="box int_pass_check">
+                            <input type="password" th:field="*{ConfirmedUserPassWord}" id="UserPassWordCon" class="int" maxlength="20">
+                            <span id="alertTxt">사용불가</span>
+                            <img src="/image/m_icon_pass.png" id="pswd1_img1" class="pswdImg">
+                        </span>
+            <span class="error_next_box" th:errors="*{UserPassWord}"></span>
+            <span th:if="${#fields.hasGlobalErrors()}">
+                <p class="error_next_box" th:each="err : ${#fields.globalErrors()}"
+                   th:text="${err}">글로벌 오류 메시지</p>
+            </span>
+        </div>
+
+        <!-- name -->
+        <div>
+            <h3 class="join_title">
+                <label for="UserName">이름</label>
+            </h3>
+            <span class="box int_id">
+                            <input type="text" th:field="*{UserName}"  class="int" maxlength="20">
+                        </span>
+            <span class="error_next_box" th:errors="*{UserName}"></span>
+        </div>
+
+        <!-- nick name-->
+        <div>
+            <h3 class="join_title">
+                <label for="nickname">닉네임</label>
+            </h3>
+            <span class="box int_id">
+                            <input type="text" th:field="*{NickName}" id="nickname" class="int" maxlength="20">
+                        </span>
+            <span class="error_next_box" th:errors="*{NickName}"></span>
+        </div>
+
+        <!-- JOIN BTN-->
+        <div class="btn_area">
+            <button type="submit" id="btnJoin" formmethod="POST">
+                <span>가입하기</span>
+            </button>
+            </form>
+        </div>
+
     </div>
 </div>
+
 </body>
 </html>

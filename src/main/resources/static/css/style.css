@@ -1,0 +1,108 @@
+.container{
+    height:100px; width: 800px;
+    margin:0 auto;
+    position:relative;
+}
+body{
+background-image:url(/image/background.jpg);
+background-size: cover;
+}
+
+.join{
+    margin:0 auto;
+    height:50px; width: 800px;
+}
+.joinmenu{
+    font-size: 15px;
+    position: relative;
+    left:100%;
+    top:30%;
+    transform: translate(-15%);
+}
+
+img{
+    width: 250px; height: 100px;
+}
+.searchbar{
+position: absolute;
+bottom:10px;
+left:585px;
+}
+
+
+ul,li{
+    list-style: none;
+    margin:0px;
+    padding: 0px;
+}
+
+a{
+    text-decoration: none;
+    color:black;
+}
+
+nav{
+    width: 800px;
+    background-color: #FFDAB9;
+}
+
+#menu .dep1{
+    font-size: 0;
+}
+
+nav .dep1 > li {
+    display: inline-block;
+    background-color: #FFDAB9;
+    font-size:16px;
+    text-align: center;
+    vertical-align: top;
+}
+
+nav .dep2{
+    display: none;
+    background-color: #cd853c;
+    position:absolute;
+}
+
+nav .dep1 > li:nth-child(2) > .dep2 {
+    width: 122px;
+}
+
+nav .dep1 > li:nth-child(3) > .dep2 {
+    width: 103px;
+}
+
+nav .dep1 > li > a{
+    display: block;
+    padding: 10px;
+}
+
+nav .dep2 a {
+    display: block;
+    padding:10px 0;
+}
+
+nav .dep1 > li:hover > .dep2{
+    display: block;
+    
+}
+
+nav .dep1 > li:hover > a{
+    background-color: rosybrown;
+    color:white;
+}
+
+nav .dep2 a:hover {
+    text-decoration: underline;
+}
+
+.ddd{
+    height: 30px;
+}
+
+.dddd {
+    margin: 0 auto; 
+    border: 1px solid black;
+    border-radius: 5px;
+    height: 500px;
+}
