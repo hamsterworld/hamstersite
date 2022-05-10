@@ -2,10 +2,14 @@ package com.example.demo.Mapper;
 
 
 import com.example.demo.dto.Board;
+import com.example.demo.dto.BoardUser;
 import com.example.demo.dto.User;
 import org.apache.ibatis.annotations.*;
 
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +30,7 @@ public interface DtoMapper {
     @Select("select count(*) from board")
     public int findTotalCount();
 
-    public List<Board> boardCount(Map map);
+    public List<BoardUser> boardCount(Map map);
 
     public Integer insertBoard(Board board);
 
@@ -39,7 +43,12 @@ public interface DtoMapper {
     @Delete("delete from board where BoardNumber = #{BoardNumber}")
     public int deleteBoard(@Param("BoardNumber") Long boardNumber);
 
+    @Update("update board set boardview = boardview + 1 where BoardNumber = #{BoardNumber}")
+    public int UpdateViewBoard(@Param("BoardNumber") Long BoardNumber);
+
     public int updateBoard(Board board);
 
+    @Select("select sysdate from dual")
+    public Timestamp date();
 
 }

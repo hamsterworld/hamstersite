@@ -4,6 +4,7 @@ package com.example.demo.board.service;
 import com.example.demo.Mapper.DtoMapper;
 import com.example.demo.dao.Dao;
 import com.example.demo.dto.Board;
+import com.example.demo.dto.BoardUser;
 import com.example.demo.dto.BoardWriteForm;
 import com.example.demo.dto.User;
 import com.example.demo.paging.paging;
@@ -41,12 +42,12 @@ public class BoardService {
         map.put("start",(page-1)*pagesize+1);
         map.put("end",((page-1)*pagesize+1)+9);
 
-        List<Board> boards = mapper.boardCount(map);
+        List<BoardUser> BoardUser = mapper.boardCount(map);
 
-        log.info("boardsearch = {} ",boards);
+        log.info("boardsearch = {} ",BoardUser);
 
         model.addAttribute("page",page);
-        model.addAttribute("Board",boards);
+        model.addAttribute("Board",BoardUser);
         model.addAttribute("paging",paging);
 
     }
@@ -73,8 +74,7 @@ public class BoardService {
 
         User user = mapper.searchOneUser(board.getUserNumber());
 
-        if(model.getAttribute("page") == null)
-            model.addAttribute("page",1);
+        int i = mapper.UpdateViewBoard(BoardNumber);
 
         model.addAttribute("Board",board);
         model.addAttribute("User",user);

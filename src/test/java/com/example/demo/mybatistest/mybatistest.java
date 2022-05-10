@@ -3,6 +3,7 @@ package com.example.demo.mybatistest;
 
 import com.example.demo.Mapper.DtoMapper;
 import com.example.demo.dto.Board;
+import com.example.demo.dto.BoardUser;
 import com.example.demo.dto.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -46,11 +47,11 @@ public class mybatistest {
         map.put("start",1);
         map.put("end",10);
 
-        List<Board> boards = mapper.boardCount(map);
+        List<BoardUser> BoardUser = mapper.boardCount(map);
 
-        log.info("게시물 = {} ",boards);
+        log.info("게시물 = {} ",BoardUser);
 
-        assertThat(boards).isNotNull();
+        assertThat(BoardUser).isNotNull();
 
     }
     
