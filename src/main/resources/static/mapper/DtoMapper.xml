@@ -14,7 +14,7 @@
         on m.usernumber = b.usernumber
     </select>
     <insert id="insertBoard" parameterType="com.example.demo.dto.Board">
-        insert into board
+        insert into board (boardnumber,boardtitle,boardcontent,boardview,usernumber)
         values(board_seq.nextval,#{BoardTitle},#{BoardContent},#{BoardView},#{UserNumber})
     </insert>
     <update id="updateBoard" parameterType="com.example.demo.dto.Board">

@@ -60,9 +60,11 @@ public class BoardService {
         Board board = new Board();
 
         board.setUserNumber(loginUser.getUserNumber());
-        board.setBoardTitle(board.getBoardTitle());
-        board.setBoardContent(board.getBoardContent());
+        board.setBoardTitle(boardWriteForm.getBoardtitle());
+        board.setBoardContent(boardWriteForm.getBoardcontent());
         board.setBoardView(0L);
+
+        log.info("board = {} ", board);
 
         mapper.insertBoard(board);
 

@@ -6,7 +6,7 @@ import lombok.Data;
 public class BoardWriteForm {
 
     private Long UserNumber;
-    private String BoardTitle;
-    private String BoardContent;
+    private String boardtitle;
+    private String boardcontent;
 
 }

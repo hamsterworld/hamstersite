@@ -5,8 +5,8 @@ import com.example.demo.dto.BoardWriteForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,15 +20,20 @@ public class BoardWriteController {
 
     @GetMapping("/write")
     public String Write(){
-        return "write";
+        return "BoardWrite";
     }
 
     @PostMapping("/write")
-    public String PostWrite(BoardWriteForm boardWriteForm, HttpSession session){
+    @ResponseBody
+    public String PostWrite(@RequestBody BoardWriteForm boardWriteForm,
+                            HttpSession session,
+                            Model model){
 
+        log.info("board = {} ",boardWriteForm);
         boardService.BoardWrite(boardWriteForm,session);
+        boardService.BoardSee(1,10,model);
 
-        return "board";
+     return "ok";
 
     }
 

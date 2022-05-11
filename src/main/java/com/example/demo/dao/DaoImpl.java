@@ -161,8 +161,8 @@ public class DaoImpl implements Dao{
             pstmt = con.prepareStatement(sql);
 
             pstmt.setLong(3, boardWriteForm.getUserNumber());
-            pstmt.setString(1, boardWriteForm.getBoardTitle());
-            pstmt.setString(2, boardWriteForm.getBoardContent());
+            pstmt.setString(1, boardWriteForm.getBoardtitle());
+            pstmt.setString(2, boardWriteForm.getBoardcontent());
 
             pstmt.executeUpdate();
 
