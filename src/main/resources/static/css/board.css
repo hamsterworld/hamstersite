@@ -12,6 +12,8 @@ background-size: cover;
     margin:0 auto;
     height:50px; width: 800px;
 }
+
+
 .joinmenu{
     font-size: 15px;
     position: relative;
@@ -111,7 +113,9 @@ float:left;
 
 .paging{
     margin: 0 auto;
+    width:440px;
     text-align: center;
+    transform: translate(-5%);
 }
 
 .fotter{

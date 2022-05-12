@@ -156,3 +156,12 @@ margin-right:11px;
     margin-top: 20px;
 }
 
+#updatebutton{
+    position: relative;
+    left:79.2%;
+}
+
+#deletebutton{
+    position: relative;
+    left:79.2%;
+}

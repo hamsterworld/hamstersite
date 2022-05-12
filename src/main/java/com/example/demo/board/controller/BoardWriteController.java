@@ -2,6 +2,7 @@ package com.example.demo.board.controller;
 
 import com.example.demo.board.service.BoardService;
 import com.example.demo.dto.BoardWriteForm;
+import com.example.demo.dto.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,11 @@ public class BoardWriteController {
 
 
     @GetMapping("/write")
-    public String Write(){
+    public String Write(HttpSession session,Model model){
+
+        User loginUser = (User) session.getAttribute("LoginUser");
+        model.addAttribute("User",loginUser);
+
         return "BoardWrite";
     }
 
@@ -29,7 +34,6 @@ public class BoardWriteController {
                             HttpSession session,
                             Model model){
 
-        log.info("board = {} ",boardWriteForm);
         boardService.BoardWrite(boardWriteForm,session);
         boardService.BoardSee(1,10,model);
 

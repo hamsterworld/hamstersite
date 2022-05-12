@@ -53,7 +53,9 @@ public class BoardService {
     }
 
 
-    public void BoardWrite(BoardWriteForm boardWriteForm, HttpSession session){
+    public void BoardWrite(BoardWriteForm boardWriteForm,
+                           HttpSession session
+                           ){
 
         User loginUser = (User) session.getAttribute("LoginUser");
 
@@ -63,8 +65,6 @@ public class BoardService {
         board.setBoardTitle(boardWriteForm.getBoardtitle());
         board.setBoardContent(boardWriteForm.getBoardcontent());
         board.setBoardView(0L);
-
-        log.info("board = {} ", board);
 
         mapper.insertBoard(board);
 

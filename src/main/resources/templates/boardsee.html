@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/html">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/boardcss.css" rel="stylesheet">
+    <script>
+       $(document).ready(function(){
+                $('#deletebutton').on("click",function(){
+                if(!confirm("정말 삭제하시겠습니까?")) {return;};
+                let form = $('#form');
+                form.attr("action","/delete");
+                form.attr("method","post");
+                form.submit();
+            });
+       });
+    </script>
+    <script th:inline="javascript">
+        let msg = [[${msg}]];
+        if(msg=="DEL_NO"){ alert("본인 글만 삭제가 가능합니다.")};
+    </script>
     <title>hamsterworld</title>
 </head>
 <body>
@@ -62,14 +80,20 @@
         </div>
         <hr class="hr">
         <div class="content">
-                    <span th:text="*{BoardContent}">
+                    <span th:utext="*{BoardContent}">
                         여기에 글내용이 들어갈겁니다.여기에 글내용이 들어갈겁니다.여기에 글내용이 들어갈겁니다.여기에 글내용이 들어갈겁니다.
                     </span>
         </div>
         </th:object>
-        <div>
+        <form action="" method="post" id="form">
             <button type="button" th:onclick="|location.href='@{/board(page=${page},pagesize=${pagesize})}'|">목록으로</button>
-        </div>
+            <button type="button" id="updatebutton" th:onclick="|location.href='@{/board(page=${page},pagesize=${pagesize})}'|">수정</button>
+            <button type="button" id="deletebutton">삭제</button>
+            <input type="hidden" id="hiddenboardnumber" name="BoardNumber" th:value="${Board.BoardNumber}">
+            <input type="hidden" id="hiddenpage" name="page" th:value="${page}">
+            <input type="hidden" id="hiddenpagesize" name="pageSize" th:value="10">
+        </form>
+
     </div>
 </div>
 </div>

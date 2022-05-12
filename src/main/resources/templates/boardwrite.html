@@ -57,7 +57,7 @@
             </div>
             <div class="information">
                 <div class="view">
-                        <span>작성자
+                        <span th:text="|작성자 : ${User.NickName}|">작성자
                         </span>
                 </div>
             </div>
@@ -92,7 +92,10 @@
       $("#btnJoin").on("click", function() {
 			oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
 			var value = document.getElementById("editorTxt").value;
-			let content = JSON.stringify({"boardcontent":$('#editorTxt').val()});
+			let content = JSON.stringify({
+			"boardcontent":$('#editorTxt').val(),
+			"boardtitle":$('#title').val()
+			});
 
             $.ajax({
                 type : "POST",

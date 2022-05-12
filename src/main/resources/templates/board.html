@@ -12,6 +12,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/board.css" rel="stylesheet">
     <title>hamsterworld</title>
+    <script th:inline="javascript">
+        let msg = [[${msg}]];
+        if(msg=="DEL_OK"){ alert("삭제 성공했습니다.")};
+    </script>
 </head>
 <body>
 <div class="join">햄스터월드 - 각종 햄스터자료를 공유하는 곳
