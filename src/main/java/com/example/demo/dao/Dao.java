@@ -21,4 +21,8 @@ public interface Dao {
     //게시판 글쓰기
     public void boardwrite(BoardWriteForm boardWriteForm);
 
+
+    //게시판 수정하기
+    public void boardupdate(Board board);
+
 }

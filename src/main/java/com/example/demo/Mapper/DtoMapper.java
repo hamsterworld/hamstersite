@@ -2,6 +2,7 @@ package com.example.demo.Mapper;
 
 
 import com.example.demo.dto.Board;
+import com.example.demo.dto.BoardUpdateForm;
 import com.example.demo.dto.BoardUser;
 import com.example.demo.dto.User;
 import org.apache.ibatis.annotations.*;
@@ -46,7 +47,7 @@ public interface DtoMapper {
     @Update("update board set boardview = boardview + 1 where BoardNumber = #{BoardNumber}")
     public int UpdateViewBoard(@Param("BoardNumber") Long BoardNumber);
 
-    public int updateBoard(Board board);
+    public int updateBoard(Board Board);
 
     @Select("select sysdate from dual")
     public Timestamp date();

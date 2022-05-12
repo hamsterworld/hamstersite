@@ -30,7 +30,6 @@ public class BoardController {
         boardService.BoardSee(page,pagesize,model);
 
 
-
         log.info("redirect = {} ", redirectAttributes.getFlashAttributes());
 
         log.info("model = {} ",model);

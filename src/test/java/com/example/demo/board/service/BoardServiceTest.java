@@ -40,9 +40,9 @@ class BoardServiceTest {
 
         BoardWriteForm boardWriteForm = new BoardWriteForm();
         boardWriteForm.setUserNumber(10L);
-        boardWriteForm.setBoardTitle("이것도 테스트 데이터 입니다.");
-        boardWriteForm.setBoardContent("이건 테스트데이터의 내용입니다.");
-        //test
+
+        boardWriteForm.setBoardtitle(boardWriteForm.getBoardtitle());
+        boardWriteForm.setBoardcontent(boardWriteForm.getBoardcontent());
 
         dao.boardwrite(boardWriteForm);
 

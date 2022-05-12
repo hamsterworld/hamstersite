@@ -3,10 +3,7 @@ package com.example.demo.board.service;
 
 import com.example.demo.Mapper.DtoMapper;
 import com.example.demo.dao.Dao;
-import com.example.demo.dto.Board;
-import com.example.demo.dto.BoardUser;
-import com.example.demo.dto.BoardWriteForm;
-import com.example.demo.dto.User;
+import com.example.demo.dto.*;
 import com.example.demo.paging.paging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +67,7 @@ public class BoardService {
 
     }
 
-    public void BoardSee(Long BoardNumber,Model model){
+    public Board BoardSee(Long BoardNumber,Model model){
 
         Board board = mapper.searchOneBoard(BoardNumber);
 
@@ -80,6 +77,21 @@ public class BoardService {
 
         model.addAttribute("Board",board);
         model.addAttribute("User",user);
+
+        return board;
+
+    }
+
+    public Board NotUpViewBoardSee(Long BoardNumber,Model model){
+
+        Board board = mapper.searchOneBoard(BoardNumber);
+
+        User user = mapper.searchOneUser(board.getUserNumber());
+
+        model.addAttribute("Board",board);
+        model.addAttribute("User",user);
+
+        return board;
 
     }
 
@@ -99,10 +111,32 @@ public class BoardService {
 
     }
 
-    public void boardUpdate(Board board){
+    public void boardUpdate(BoardUpdateForm boardUpdateForm){
+
+        log.info("boardupdateform = {} ",boardUpdateForm);
+
+        Board board = new Board();
+
+        board.setBoardTitle(boardUpdateForm.getBoardtitle());
+        board.setBoardContent(boardUpdateForm.getBoardcontent());
+        board.setBoardNumber(boardUpdateForm.getBoardnumber());
 
         mapper.updateBoard(board);
 
     }
 
+    public boolean boardconfirm(HttpSession session,Board board){
+
+        User user = (User)session.getAttribute("LoginUser");
+
+        if(board.getUserNumber() == user.getUserNumber()){
+
+            return true;
+
+        }
+
+        return false;
+
+
+    }
 }

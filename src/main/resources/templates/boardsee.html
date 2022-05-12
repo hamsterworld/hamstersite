@@ -21,7 +21,10 @@
     </script>
     <script th:inline="javascript">
         let msg = [[${msg}]];
-        if(msg=="DEL_NO"){ alert("본인 글만 삭제가 가능합니다.")};
+        if(msg=="DEL_NO"){ alert("본인 글만 삭제가 가능합니다.")}
+        else if(msg == "UPD_NO"){
+            alert("본인 글만 수정 가능합니다.");
+        };
     </script>
     <title>hamsterworld</title>
 </head>
@@ -87,7 +90,7 @@
         </th:object>
         <form action="" method="post" id="form">
             <button type="button" th:onclick="|location.href='@{/board(page=${page},pagesize=${pagesize})}'|">목록으로</button>
-            <button type="button" id="updatebutton" th:onclick="|location.href='@{/board(page=${page},pagesize=${pagesize})}'|">수정</button>
+            <button type="button" id="updatebutton" th:onclick="|location.href='@{/update(BoardNumber=${Board.BoardNumber},page=${page},pagesize=${pagesize})}'|">수정</button>
             <button type="button" id="deletebutton">삭제</button>
             <input type="hidden" id="hiddenboardnumber" name="BoardNumber" th:value="${Board.BoardNumber}">
             <input type="hidden" id="hiddenpage" name="page" th:value="${page}">

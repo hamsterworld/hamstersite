@@ -90,4 +90,17 @@ public class mybatistest {
 
     }
 
+    @Test
+    void UpdateBoard(){
+
+        Board board = new Board();
+
+        board.setBoardTitle("으ef하fwef하");
+        board.setBoardContent("wfwefwe내용이야.");
+        board.setBoardNumber(43L);
+
+        mapper.updateBoard(board);
+
+    }
+
 }

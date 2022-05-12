@@ -176,8 +176,34 @@ public class DaoImpl implements Dao{
 
     }
 
+    @Override
+    public void boardupdate(Board board) {
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        String sql = "update board set BoardTitle = ? ,boardcontent = ? where BoardNumber= ?";
 
 
+
+        try {
+
+            con = getConnection(dataSource);
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setLong(3, board.getBoardNumber());
+            pstmt.setString(1, board.getBoardTitle());
+            pstmt.setString(2, board.getBoardContent());
+
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            close(con, pstmt, null);
+        }
+
+
+    }
 
 
     private void close(Connection con,PreparedStatement stmt,ResultSet rs) {

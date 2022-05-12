@@ -3,15 +3,15 @@ package com.example.demo.board.controller;
 
 import com.example.demo.board.service.BoardService;
 import com.example.demo.dto.Board;
+import com.example.demo.dto.BoardUpdateForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.h2.util.DbDriverActivator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -20,24 +20,43 @@ public class BoardUpdateController {
 
     private final BoardService boardSErvice;
 
-    @GetMapping("/board/update")
+    @GetMapping("/update")
     public String updateBoard(@RequestParam("BoardNumber") Long boardNumber,
+                              @RequestParam Integer page,
+                              @RequestParam Integer pagesize,
+                              HttpSession session,
+                              RedirectAttributes redirectAttributes,
                               Model model){
 
-        boardSErvice.BoardSee(boardNumber,model);
+        Board board = boardSErvice.NotUpViewBoardSee(boardNumber, model);
 
-        return "updateboard";
+        if(!boardSErvice.boardconfirm(session, board)){
+
+            redirectAttributes.addAttribute("page",page);
+            redirectAttributes.addAttribute("pagesize",pagesize);
+            redirectAttributes.addFlashAttribute("msg","UPD_NO");
+
+            return "redirect:/board/"+boardNumber;
+
+        }
+
+        model.addAttribute("page",page);
+        model.addAttribute("pagesize",pagesize);
+
+        return "boardupdate";
     }
 
-    @PostMapping("/board/update")
-    public String PostupdateBoard(@ModelAttribute("Board") Board board,
+    @PostMapping("/update")
+    @ResponseBody
+    public String PostupdateBoard(@RequestBody BoardUpdateForm boardUpdateForm,
                                   Model model){
 
-        //애초에 자기글이 아니면 수정삭제버튼이 안뜨기때문에 따로 검증할 이유가없다.
+        log.info("boardupdatefrom = {} ",boardUpdateForm);
 
-        boardSErvice.boardUpdate(board);
 
-        return "redirect:/board";
+        boardSErvice.boardUpdate(boardUpdateForm);
+
+        return "success";
 
     }
 

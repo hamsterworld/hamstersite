@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="/SmartEditor/js/HuskyEZCreator.js" charset="utf-8"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="/css/boardwrite.css" rel="stylesheet">
+  <title>hamsterworld</title>
+</head>
+<body>
+<div class="join">햄스터월드 - 각종 햄스터자료를 공유하는 곳
+  <div class="joinmenu">
+    <a>회원가입</a> |
+    <a>로그인</a>
+  </div>
+</div>
+<hr>
+<div class="container">
+  <div class="item"><img src="./image/istockphoto-675804830-612x612.jpg"></div>
+  <div class="searchbar">
+    <input type="text" placeholder="search"><button type="input">검색</button>
+  </div>
+  <nav class="item" id="menu">
+    <ul class="dep1">
+      <li><a href="/">Home</a></li>
+      <li><a href="/board">HamsterBoard</a>
+        <ul class="dep2">
+          <li><a href="#">정보 게시판</a></li>
+          <li><a href="#">육아 게시판</a></li>
+          <li><a href="#">사진 게시판</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Community</a>
+        <ul class="dep2">
+          <li><a href="#">유머 게시판</a></li>
+          <li><a href="#">이슈 게시판</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Test</a></li>
+      <li><a href="#">Test2</a></li>
+      <li><a href="#">Test3</a></li>
+    </ul>
+  </nav>
+  <div class="ddd"></div>
+  <div class="wrapper">
+    <div class="title">
+      <div class="titleid">
+                        <span>
+                            <input type="text" name="BoardTitle" id="title" class="int" maxlength="20" placeholder="제목을 입력해주세요."
+                                   value="제목이 들어간다." th:value="${Board.BoardTitle}">
+                        </span>
+      </div>
+    </div>
+    <div class="information">
+      <div class="view">
+                        <span th:text="|작성자 : ${User.NickName}|">작성자
+                        </span>
+      </div>
+    </div>
+    <hr class="hr">
+    <div class="content">
+      <textarea name="BoardContent" id="editorTxt" class="int" th:utext="${Board.BoardContent}">내용이 들어감</textarea>
+    </div>
+    <div class="btn">
+      <button type="button" id="btnUpdate">수정 하기</button>
+      <button type="button" onclick="location.href='/board'">취소</button>
+    </div>
+  </div>
+</div>
+</div>
+  <input type="hidden" id="page" value="1" th:value="${page}">
+  <input type="hidden" id="pagesize" value="1" th:value="${pagesize}">
+  <input type="hidden" id="boardnumber" value="1" th:value="${Board.BoardNumber}">
+</body>
+<script>
+    let oEditors = []
+
+    smartEditor = function() {
+      console.log("Naver SmartEditor")
+      nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "editorTxt",
+        sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+        fCreator: "createSEditor2"
+      })
+    };
+
+    $(document).ready(function() {
+      smartEditor()
+
+      $("#btnUpdate").on("click", function() {
+            if(!confirm("정말 수정하시겠습니까?")) return;
+			oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
+			var value = document.getElementById("editorTxt").value;
+			let content = JSON.stringify({
+			"boardcontent":$('#editorTxt').val(),
+			"boardtitle":$('#title').val(),
+			"boardnumber":$('#boardnumber').val(),
+			"page":$('#page').val(),
+			"pagesize":$('#pagesize').val()
+			});
+
+            $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/update",
+                data : content,
+                success : function(res){
+                    console.log(res);
+                    location.href="/board/[[${Board.BoardNumber}]]?page=[[${page}]]&pagesize=[[${pagesize}]]";
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            });
+		});
+
+    });
+
+
+
+  </script>
+</html>
