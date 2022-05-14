@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
-@Component
-@RequestMapping
+@Controller
 public class test {
 
     @GetMapping("/test")
     public String test(HttpServletRequest request){
 
-        log.info("URL = {} " , request.getRequestURI());
         return "test";
 
     }

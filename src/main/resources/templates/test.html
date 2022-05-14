@@ -1,10 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+       $(document).ready(function(){
+
+                //댓글보기
+               $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/commenttest",
+                success : function(res){
+                    console.log(res);
+                    $('.comment').html(temHtml(res));
+                    $('.comment1').html(hamster());
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            }); //ajax 끝
+
+            //댓글 삭제버튼 누르면 삭제~
+            $('.comment').on('click','.btndel',function(){
+
+
+                let cno = $(this).parent().attr('userid');
+                let bno = $(this).parent().attr('userpassword');
+                console.log(cno);
+                console.log(bno);
+
+                let content = JSON.stringify({
+                    "userid":cno,
+                    "userpassword":bno
+                })
+
+                console.log(content);
+
+                $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/commentdelete",
+                data : content,
+                success : function(res){
+                    console.log(res);
+                    //showcomment();
+
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            });//ajax 끝
+
+            });//click끝
+
+            //댓글 쓰기버튼
+             $('.btnwrite').click(function(){
+
+                let cno = $('.comment').val();
+
+                console.log(cno);
+
+
+                let content = JSON.stringify({
+                    "userid":cno
+                })
+
+                console.log(content);
+
+                $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/commentwrite",
+                data : content,
+                success : function(res){
+                    console.log(res);
+                    //showcomment();
+
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            });//ajax 끝
+
+            });//click끝
+
+            //댓글 update하기
+             $('.comment').on('click','.btnupd',function(){
+                let comment = $('span.userid',$(this).parent()).text();
+
+                console.log(comment);
+
+                $('input[name=comment]').val(comment);
+                $('.commentupdate').attr('data-userid',comment);
+
+
+
+
+            });//click끝
+
+
+            //댓글 쓰기버튼
+             $('.btnwrite').click(function(){
+
+                let cno = $('.comment').val();
+
+                console.log(cno);
+
+
+                let content = JSON.stringify({
+                    "userid":cno
+                })
+
+                console.log(content);
+
+                $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/commentwrite",
+                data : content,
+                success : function(res){
+                    console.log(res);
+                    //showcomment();
+
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            });//ajax 끝
+
+            });//click끝
+
+
+
+            }); //ready끝
+
+            let temHtml = function(comments){
+            let tmp = "<ul>";
+
+            comments.forEach(function(comment){
+                    tmp += ' <li userid='+comment.userId
+                    tmp += ' userPassWord='+comment.userPassWord + '>'
+                    tmp += ' userId = <span class="userId">' + comment.userId + '</span>'
+                    tmp += ' userPassWord = <span class="userPassWord">' + comment.userPassWord + '</span>'
+                    tmp += ' <button class="btndel">삭제</button>'
+                    tmp += ' <button class="btnupd">수정</button>'
+                    tmp += ' </li>'
+
+
+                    console.log(comment.userId);
+                    console.log(comment.userPassWord);
+                });
+
+                return tmp + "</ul>";
+            }
+
+            let hamster = function(){
+            let tmp = {userId:"테스트입니다.",UserId2:"test2입니다."}
+            let content = '<span>'+ tmp.userId
+            content += tmp.UserId2 +'</span>'
+            console.log(tmp.UserId2);
+            return content;
+
+            }
+
+            let showcomment = function(){
+
+            $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/commenttest",
+                success : function(res){
+                    console.log(res);
+                    $('.comment').html(temHtml(res));
+                    $('.comment1').html(hamster());
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            }); //ajax 끝
+
+            }// 함수끝
+    </script>
 </head>
 <body>
-$END$
+<input type="text" class="comment">
+<input type="text" class="commentupdate">
+<button type="button" class="btnwrite">댓글 추가</button>
+<button type="button" class="btnupdate">댓글 수정</button>
+<div class="comment">
+    여기다가 댓글 넣을겁니다.
+</div>
+<div class="comment1">
+    여기다가 댓글 넣을겁니다.
+</div>
+
 </body>
 </html>

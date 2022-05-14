@@ -2,9 +2,7 @@ package com.example.demo.mybatistest;
 
 
 import com.example.demo.Mapper.DtoMapper;
-import com.example.demo.dto.Board;
-import com.example.demo.dto.BoardUser;
-import com.example.demo.dto.User;
+import com.example.demo.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -102,5 +100,89 @@ public class mybatistest {
         mapper.updateBoard(board);
 
     }
+
+    @Test
+    @DisplayName("코맨트 입력 확인")
+    void insertComment(){
+
+        Comment comment = new Comment();
+
+        comment.setBoardnumber(10);
+        comment.setUsernumber(10);
+        comment.setBoardnumber(10);
+        comment.setNickname("귀여운게죄라면난사형");
+        comment.setCommentcontent("첫 댓글입니다.");
+
+        mapper.insertComment(comment);
+        Comment comment1 = mapper.selectComment(1);
+
+        log.info("comment1 = {} ",comment1);
+
+        assertTrue(comment.getNickname().equals(comment1.getNickname()));
+
+    }
+
+    @Test
+    @DisplayName("코멘트 한개를 잘 받아올수있는지")
+    void selectcomment(){
+
+        Comment comment1 = mapper.selectComment(1);
+
+        log.info("comment1 = {} ",comment1);
+
+        assertTrue("귀여운게죄라면난사형".equals(comment1.getNickname()));
+
+    }
+
+    @Test
+    @DisplayName("코멘트를 잘 삭제할수있는지")
+    void deletecomment(){
+
+        int i = mapper.deleteComment(2);
+
+        assertTrue(i == 1);
+
+    }
+
+    @Test
+    @DisplayName("각 게시판마다 코멘트개수를 잘 받아올수있는지")
+    void countcomment(){
+
+        int i = mapper.CountComment(10);
+
+        assertTrue(i==1);
+
+    }
+
+    @Test
+    @DisplayName("각 게시판마다 코멘트를 잘 받아올수있는지")
+    void Listcountcomment(){
+
+        List<Comment> comments = mapper.ListSelectComment(10);
+
+        log.info("comments = {} ", comments);
+
+    }
+
+    @Test
+    @DisplayName("코멘트를 잘 수정할수있는지")
+    void updatecomment(){
+
+        CommentUpdateForm commentUpdateForm = new CommentUpdateForm();
+
+        commentUpdateForm.setCommentnumber(7);
+        commentUpdateForm.setUsernumber(10);
+        commentUpdateForm.setCommentcontent("변화란 좋은거야.");
+
+        int i = mapper.updateComment(commentUpdateForm);
+
+        Comment comment = mapper.selectComment(7);
+
+        assertTrue(i == 1);
+
+        assertTrue(comment.getCommentcontent().equals(commentUpdateForm.getCommentcontent()));
+
+    }
+
 
 }

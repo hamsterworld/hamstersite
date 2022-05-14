@@ -1,21 +1,14 @@
 package com.example.demo.Mapper;
 
 
-import com.example.demo.dto.Board;
-import com.example.demo.dto.BoardUpdateForm;
-import com.example.demo.dto.BoardUser;
-import com.example.demo.dto.User;
+import com.example.demo.dto.*;
 import org.apache.ibatis.annotations.*;
 
 
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.type.MappedTypes;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -51,5 +44,21 @@ public interface DtoMapper {
 
     @Select("select sysdate from dual")
     public Timestamp date();
+
+    public int insertComment(Comment comment);
+
+    @Select("select * from commenttable where commentnumber = #{commentnumber}")
+    public Comment selectComment(Integer Commentnumber);
+
+    @Select("select count(*) from commenttable where boardnumber = #{boardnumber}")
+    public int CountComment(Integer boardnumber);
+
+    @Select("select * from commenttable where boardnumber = #{boardnumber}")
+    public List<Comment> ListSelectComment(Integer boardnumber);
+
+    public int updateComment(CommentUpdateForm commentUpdateForm);
+
+    @Delete("delete commenttable where commentnumber = #{commentnumber}")
+    public int deleteComment(Integer commentnumber);
 
 }

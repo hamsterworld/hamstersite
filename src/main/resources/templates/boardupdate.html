@@ -97,6 +97,7 @@
             if(!confirm("정말 수정하시겠습니까?")) return;
 			oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
 			var value = document.getElementById("editorTxt").value;
+
 			let content = JSON.stringify({
 			"boardcontent":$('#editorTxt').val(),
 			"boardtitle":$('#title').val(),
