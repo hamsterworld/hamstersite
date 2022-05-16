@@ -9,17 +9,22 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script>
+
+       let content=JSON.stringify({"boardnumber":1});
+
        $(document).ready(function(){
+
+
 
                 //댓글보기
                $.ajax({
                 type : "POST",
                 contentType: "application/json",
-                url : "/commenttest",
+                data:content,
+                url : "/comment",
                 success : function(res){
                     console.log(res);
                     $('.comment').html(temHtml(res));
-                    $('.comment1').html(hamster());
                 },
                 error : function(XMLHttpRequest, textStatus, errorThrown){
                     console.log(textStatus);
@@ -31,15 +36,14 @@
             //댓글 삭제버튼 누르면 삭제
             $('.comment').on('click','.btndel',function(){
 
+                if(!confirm("정말 삭제하시겠습니까?")) return;
 
-                let cno = $(this).parent().attr('userid');
-                let bno = $(this).parent().attr('userpassword');
-                console.log(cno);
-                console.log(bno);
+                let cno = $(this).parent().attr('data_cno');
+                let bno = $(this).parent().attr('data_bno');
 
                 let content = JSON.stringify({
-                    "userid":cno,
-                    "userpassword":bno
+                    "commentnumber":cno,
+                    "boardnumber":bno
                 })
 
                 console.log(content);
@@ -51,7 +55,7 @@
                 data : content,
                 success : function(res){
                     console.log(res);
-                    //showcomment();
+                    showcomment();
 
                 },
                 error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -67,16 +71,17 @@
             //댓글 쓰기
              $('.btnwrite').click(function(){
 
-                let cno = $('.comment').val();
+                let commentcontent = $('.commenttt').val();
 
-                console.log(cno);
+                console.log(commentcontent);
 
 
                 let content = JSON.stringify({
-                    "userid":cno
+                    "commentcontent":commentcontent,
+                    "boardnumber":10,
+                    "usernumber":10,
+                    "nickname":"귀여운게죄라면난사형"
                 })
-
-                console.log(content);
 
                 $.ajax({
                 type : "POST",
@@ -85,7 +90,7 @@
                 data : content,
                 success : function(res){
                     console.log(res);
-                    //showcomment();
+                    showcomment();
 
                 },
                 error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -96,26 +101,24 @@
             });//ajax 끝
 
             });//click끝
+
+
 
             //댓글 update하기
              $('.comment').on('click','.btnupd',function(){
-                let comment = $('span.userid',$(this).parent()).text();
+                let comment = $('span.userId',$(this).parent()).text();
 
                 console.log(comment);
-
-                $('input[name=comment]').val(comment);
-                $('.commentupdate').attr('data-userid',comment);
-
-
-
+                $('input[name=commentupdate]').val(comment);
+                $('.btnupdate').attr('data-userid',comment);
 
             });//click끝
 
 
-            //댓글 쓰기버튼
-             $('.btnwrite').click(function(){
+            //댓글 update보내기
+             $('.btnupdate').click(function(){
 
-                let cno = $('.comment').val();
+                let cno = $('.commentupdate').val();
 
                 console.log(cno);
 
@@ -129,7 +132,7 @@
                 $.ajax({
                 type : "POST",
                 contentType: "application/json",
-                url : "/commentwrite",
+                url : "/commentupdate",
                 data : content,
                 success : function(res){
                     console.log(res);
@@ -144,50 +147,55 @@
             });//ajax 끝
 
             });//click끝
+
+
 
 
 
             }); //ready끝
 
             let temHtml = function(comments){
-            let tmp = "<ul>";
+            let tmp = '<ul class="comment_ul">';
 
             comments.forEach(function(comment){
-                    tmp += ' <li userid='+comment.userId
-                    tmp += ' userPassWord='+comment.userPassWord + '>'
-                    tmp += ' userId = <span class="userId">' + comment.userId + '</span>'
-                    tmp += ' userPassWord = <span class="userPassWord">' + comment.userPassWord + '</span>'
+                    tmp += ' <li data_cno='+comment.commentnumber
+                    tmp += ' data_bno='+comment.boardnumber
+                    tmp += ' data_uno='+comment.usernumber + '>'
+                    tmp += ' <div class="comment_div"> '
+                    tmp += ' <div class="user_info"> '
+                    tmp += ' <span data_ninkname='+comment.nickname
+                    tmp += ' data_date='+comment.commentdate +'>'
+                    tmp +=   comment.nickname + ' ' + comment.commentdate + ' 수정 삭제'
+                    tmp +=   '</span>'
+                    tmp +=   '<div class="usercomment">'
+                    tmp +=   '<span>'+comment.commentcontent+'</span>'
+                    tmp +=   '</div>'
+                    tmp +=   '</div>'
+                    tmp +=   '</div>'
                     tmp += ' <button class="btndel">삭제</button>'
                     tmp += ' <button class="btnupd">수정</button>'
                     tmp += ' </li>'
+                    tmp += ' <hr class="hr">'
 
+                    console.log(comment);
 
-                    console.log(comment.userId);
-                    console.log(comment.userPassWord);
                 });
 
                 return tmp + "</ul>";
             }
 
-            let hamster = function(){
-            let tmp = {userId:"테스트입니다.",UserId2:"test2입니다."}
-            let content = '<span>'+ tmp.userId
-            content += tmp.UserId2 +'</span>'
-            console.log(tmp.UserId2);
-            return content;
 
-            }
 
             let showcomment = function(){
 
             $.ajax({
                 type : "POST",
                 contentType: "application/json",
-                url : "/commenttest",
+                data:content,
+                url : "/comment",
                 success : function(res){
                     console.log(res);
                     $('.comment').html(temHtml(res));
-                    $('.comment1').html(hamster());
                 },
                 error : function(XMLHttpRequest, textStatus, errorThrown){
                     console.log(textStatus);
@@ -200,16 +208,14 @@
     </script>
 </head>
 <body>
-<input type="text" class="comment">
-<input type="text" class="commentupdate">
+<input type="text" class="commenttt">
+<input type="text" class="commentupdate" name="commentupdate">
 <button type="button" class="btnwrite">댓글 추가</button>
 <button type="button" class="btnupdate">댓글 수정</button>
 <div class="comment">
-    여기다가 댓글 넣을겁니다.
+
 </div>
-<div class="comment1">
-    여기다가 댓글 넣을겁니다.
-</div>
+
 
 </body>
 </html>

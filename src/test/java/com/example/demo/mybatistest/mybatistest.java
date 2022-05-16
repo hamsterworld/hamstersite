@@ -109,7 +109,6 @@ public class mybatistest {
 
         comment.setBoardnumber(10);
         comment.setUsernumber(10);
-        comment.setBoardnumber(10);
         comment.setNickname("귀여운게죄라면난사형");
         comment.setCommentcontent("첫 댓글입니다.");
 
