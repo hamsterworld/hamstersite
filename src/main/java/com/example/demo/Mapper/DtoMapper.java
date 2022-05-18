@@ -47,18 +47,23 @@ public interface DtoMapper {
 
     public int insertComment(Comment comment);
 
-    @Select("select * from commenttable where commentnumber = #{commentnumber}")
+    @Select("select * from commenttable where commentnumber = #{commentnumber}" )
     public Comment selectComment(Integer Commentnumber);
 
     @Select("select count(*) from commenttable where boardnumber = #{boardnumber}")
     public int CountComment(Integer boardnumber);
 
-    @Select("select * from commenttable where boardnumber = #{boardnumber}")
-    public List<Comment> ListSelectComment(Integer boardnumber);
+    //@Select("select commentnumber,boardnumber,usernumber,nickname,commentcontent,commentdate,nvl(parentcommentnumber,commentnumber) as parentcommentnumber,targetnickname " +
+            //"from commenttable where boardnumber = #{boardnumber} order by parentcommentnumber asc,commentnumber asc")
+    //public List<Comment> ListSelectComment(Integer boardnumber);
+
+    public List<Comment> ListSelectComment(Map map);
 
     public int updateComment(CommentUpdateForm commentUpdateForm);
 
     @Delete("delete commenttable where commentnumber = #{commentnumber}")
     public int deleteComment(Integer commentnumber);
+
+    public int insertReply(ReplyCommentWrite replyCommentwrite);
 
 }

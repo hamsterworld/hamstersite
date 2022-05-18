@@ -5,6 +5,7 @@ import com.example.demo.comment.service.CommentService;
 import com.example.demo.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +22,15 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comment")
-    public List<Comment> CommentSee(){
+    public HashMap<String, Object> CommentSee(){
         Integer boardnumber = 10;
-        return commentService.selectListComment(boardnumber);
-
+        Integer page = null;
+        Integer pagesize = null;
+        List<Comment> comments = commentService.selectListComment(boardnumber,page,pagesize);
+        log.info("targetcomment = {} ",  comments);
+        HashMap<String, Object> Map = new HashMap<>();
+        Map.put("comments",comments);
+        return Map;
     }
 
     @PostMapping("/commentdelete")
@@ -48,14 +54,18 @@ public class CommentController {
         return "ok";
     }
 
+    @PostMapping("/commentoneselect")
+    public Comment commentoneselect(@RequestBody CommentUpdateoneForm commentUpdateoneForm){
+
+        return commentService.SelectOneComment(commentUpdateoneForm.getCommentnumber());
+
+    }
+
     @PostMapping("/commentupdate")
-    public String CommentUpdate(@RequestBody String userid){
+    public void CommentUpdate(@RequestBody CommentUpdateForm commentUpdateForm){
 
-        log.info("잘왓니? = {} ",userid);
+        commentService.UpdateComment(commentUpdateForm);
 
-
-
-        return userid;
     }
 
 

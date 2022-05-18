@@ -20,6 +20,12 @@
     <update id="updateBoard" parameterType="com.example.demo.dto.Board">
         update board set BoardTitle = #{BoardTitle}, boardcontent = #{BoardContent} where BoardNumber= #{BoardNumber}
     </update>
+    <select id="ListSelectComment" parameterType="java.util.HashMap" resultType="com.example.demo.dto.Comment">
+        select * from (select ROWNUM RN, A.* from (select commentnumber,boardnumber,usernumber,nickname,
+        commentcontent,commentdate,nvl(parentcommentnumber,commentnumber) as parentcommentnumber,
+        targetnickname from commenttable order by parentcommentnumber asc,commentnumber asc) A)
+        WHERE RN BETWEEN #{start} AND #{end}
+    </select>
     <insert id="insertComment" parameterType="com.example.demo.dto.Comment">
         insert into commenttable (commentnumber,boardnumber,usernumber,nickname,commentcontent)
         values(comment_seq.nextval,#{boardnumber},#{usernumber},#{nickname},#{commentcontent})
@@ -27,5 +33,9 @@
     <update id="updateComment" parameterType="com.example.demo.dto.CommentUpdateForm">
         update commenttable set CommentContent = #{commentcontent} where commentnumber = #{commentnumber}
     </update>
+    <insert id="insertReply" parameterType="com.example.demo.dto.ReplyCommentWrite">
+        insert into commenttable (commentnumber,parentcommentnumber,commentcontent,usernumber,nickname,boardnumber,targetnickname)
+        values(comment_seq.nextval,#{parentcommentnumber},#{commentcontent},#{usernumber},#{nickname},#{boardnumber},#{targetnickname})
+    </insert>
 </mapper>
 

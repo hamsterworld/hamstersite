@@ -6,25 +6,23 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <link href="/css/comment.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Title</title>
     <script>
 
-       let content=JSON.stringify({"boardnumber":1});
+
 
        $(document).ready(function(){
 
-
-
-                //댓글보기
+               //댓글보기
                $.ajax({
                 type : "POST",
                 contentType: "application/json",
-                data:content,
                 url : "/comment",
                 success : function(res){
-                    console.log(res);
-                    $('.comment').html(temHtml(res));
+                    console.log(res.comments);
+                    $('.comment').html(temHtml(res.comments));
                 },
                 error : function(XMLHttpRequest, textStatus, errorThrown){
                     console.log(textStatus);
@@ -106,28 +104,36 @@
 
             //댓글 update하기
              $('.comment').on('click','.btnupd',function(){
-                let comment = $('span.userId',$(this).parent()).text();
 
-                console.log(comment);
-                $('input[name=commentupdate]').val(comment);
-                $('.btnupdate').attr('data-userid',comment);
+                let cno = $(this).parent().attr('data_cno');
+                let bno = $(this).parent().attr('data_bno');
+
+                let origincontent = $(this).prev().prev().children().
+                children('.commentcontent').text();
+
+                $('#btn-write-modify').attr('data_cno',cno);
+
+                if($('.modal').css('display') == 'none'){
+                    $('.modal').css('display','block');
+                    $('.modify-writebox-content').children().val(origincontent);
+
+                } //if문 끝
 
             });//click끝
 
 
             //댓글 update보내기
-             $('.btnupdate').click(function(){
+             $('#btn-write-modify').click(function(){
 
-                let cno = $('.commentupdate').val();
+                if(!confirm('정말 수정하시겠습니까?')) return;
 
-                console.log(cno);
-
+                let updatecontent = $('.modify-writebox-content').children().val();
+                let cno = $('#btn-write-modify').attr('data_cno');
 
                 let content = JSON.stringify({
-                    "userid":cno
+                    "commentnumber":cno,
+                    "commentcontent":updatecontent
                 })
-
-                console.log(content);
 
                 $.ajax({
                 type : "POST",
@@ -136,7 +142,8 @@
                 data : content,
                 success : function(res){
                     console.log(res);
-                    //showcomment();
+                    showcomment();
+                    $('.modal').css('display','none');
 
                 },
                 error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -144,36 +151,113 @@
                     console.log(errorThrown);
                     alert("오류가 발생했습니다.")
                 }
+
             });//ajax 끝
+
 
             });//click끝
 
+                $('.close').click(function(){
+
+                    if($('.modal').css('display') == 'block'){
+                    $('.modal').css('display','none');
+
+                } //if문 끝
+
+                })
 
 
+                //답글 입력창보여주기.
+                 $('.comment').on('click','.btnreply',function(){
 
+                    console.log('ok');
+
+                    $("#replyform").appendTo($(this).parent());
+
+                    $('#replyform').css('display','block');
+
+                 })
+
+                 //답글 쓰기
+                 $('#wrtrepbtn').click(function(){
+
+                     let pcno = $(this).parent().parent().attr('data_pcno');
+                     let targetnickname = $(this).parent().parent().attr('data_nickname');
+                     let replycontent = $('input[name=replycomment]').val()
+
+                     console.info(targetnickname)
+
+                     if(replycontent.trim() == ''){
+                        alert('내용을 입력해주세요.')
+                        $('input[name=replycomment]').focus();
+                        return;
+                     }
+
+                     let reply = JSON.stringify({
+                        "commentcontent":replycontent,
+                        "usernumber":10,
+                        "parentcommentnumber":pcno,
+                        "nickname":"귀여운게죄라면난사형",
+                        "boardnumber":10,
+                        "targetnickname":targetnickname
+                     })
+
+                     console.info(reply)
+
+                    $.ajax({
+                    type : "POST",
+                    contentType: "application/json",
+                    data:reply,
+                    url : "/replyinsert",
+                    success : function(res){
+                        alert('성공적으로 완료하였습니다.');
+                        showcomment();
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+                }); //ajax 끝
+
+                $('#replyform').css('display','none');
+                $('input[name=replycomment]').val('');
+                $('#replyform').appendTo('body');
+
+                }) //답글쓰기끗
 
             }); //ready끝
+
+
+
 
             let temHtml = function(comments){
             let tmp = '<ul class="comment_ul">';
 
             comments.forEach(function(comment){
                     tmp += ' <li data_cno='+comment.commentnumber
+                    tmp += ' data_pcno ='+comment.parentcommentnumber
                     tmp += ' data_bno='+comment.boardnumber
+                    tmp += ' data_nickname='+comment.nickname
                     tmp += ' data_uno='+comment.usernumber + '>'
                     tmp += ' <div class="comment_div"> '
                     tmp += ' <div class="user_info"> '
+                    if(comment.commentnumber != comment.parentcommentnumber)
+                   {tmp += ' ㄴ'}
                     tmp += ' <span data_ninkname='+comment.nickname
                     tmp += ' data_date='+comment.commentdate +'>'
-                    tmp +=   comment.nickname + ' ' + comment.commentdate + ' 수정 삭제'
+                    tmp +=   comment.nickname + ' ' + comment.commentdate + ' 수정 삭제 답글'
                     tmp +=   '</span>'
-                    tmp +=   '<div class="usercomment">'
+                    tmp +=   '<div class="commentcontent">'
+                    if(comment.commentnumber != comment.parentcommentnumber)
+                    {tmp +=  '<span id="targetnickname">@'+comment.targetnickname+'</span>&nbsp;&nbsp;'}
                     tmp +=   '<span>'+comment.commentcontent+'</span>'
                     tmp +=   '</div>'
                     tmp +=   '</div>'
                     tmp +=   '</div>'
                     tmp += ' <button class="btndel">삭제</button>'
                     tmp += ' <button class="btnupd">수정</button>'
+                    tmp += ' <button class="btnreply">답글</button>'
                     tmp += ' </li>'
                     tmp += ' <hr class="hr">'
 
@@ -185,17 +269,16 @@
             }
 
 
-
             let showcomment = function(){
+
 
             $.ajax({
                 type : "POST",
                 contentType: "application/json",
-                data:content,
                 url : "/comment",
                 success : function(res){
-                    console.log(res);
-                    $('.comment').html(temHtml(res));
+                    console.log(res.comments);
+                    $('.comment').html(temHtml(res.comments));
                 },
                 error : function(XMLHttpRequest, textStatus, errorThrown){
                     console.log(textStatus);
@@ -209,13 +292,38 @@
 </head>
 <body>
 <input type="text" class="commenttt">
-<input type="text" class="commentupdate" name="commentupdate">
 <button type="button" class="btnwrite">댓글 추가</button>
-<button type="button" class="btnupdate">댓글 수정</button>
-<div class="comment">
-
+<div class="comment" id="comment">
 </div>
 
+<div id="modalWin" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>
+        <h2> | 댓글 수정</h2>
+        <div id="modify-writebox">
+            <div class="commenter commenter-writebox"></div>
+            <div class="modify-writebox-content">
+                <textarea name="" id="" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
+            </div>
+            <div id="modify-writebox-bottom">
+                <div class="register-box">
+                    <a href="#" class="btn" id="btn-write-modify">등록</a>
+                </div>
+            </div>
+        </div>
+        </p>
+    </div>
+</div>
+
+<div id="replyform" style="display:none">
+    <input type="text" name="replycomment">
+    <button id="wrtrepbtn" type="button">등록</button>
+</div>
+<div class="paging" id="paging">
+
+</div>
 
 </body>
 </html>

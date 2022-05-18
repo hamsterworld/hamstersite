@@ -3,9 +3,8 @@ package com.example.demo.dto;
 import lombok.Data;
 
 @Data
-public class CommentUpdateForm {
+public class CommentUpdateoneForm {
 
     private Integer commentnumber;
-    private String commentcontent;
 
 }

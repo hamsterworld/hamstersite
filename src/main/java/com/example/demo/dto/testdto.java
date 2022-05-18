@@ -7,10 +7,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class testdto {
 
-    @NotBlank
-    private String userid;
-
-    @NotBlank
-    private String userpassword;
+    private Integer boardnumber;
+    private Integer page;
+    private Integer pagesize;
 
 }

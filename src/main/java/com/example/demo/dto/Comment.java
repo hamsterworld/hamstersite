@@ -12,5 +12,7 @@ public class Comment {
     private String nickname;
     private String commentcontent;
     private String commentdate;
+    private Integer parentcommentnumber;
+    private String targetnickname;
 
 }

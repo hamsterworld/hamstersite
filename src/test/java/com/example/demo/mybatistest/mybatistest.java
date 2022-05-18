@@ -3,6 +3,7 @@ package com.example.demo.mybatistest;
 
 import com.example.demo.Mapper.DtoMapper;
 import com.example.demo.dto.*;
+import com.example.demo.paging.paging;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -157,7 +158,15 @@ public class mybatistest {
     @DisplayName("각 게시판마다 코멘트를 잘 받아올수있는지")
     void Listcountcomment(){
 
-        List<Comment> comments = mapper.ListSelectComment(10);
+        HashMap<Object, Object> map = new HashMap<>();
+
+        Integer page = 3;
+        Integer pagesize = 5;
+
+        map.put("start",(page-1)*pagesize+1);
+        map.put("end",((page-1)*pagesize+1)+9);
+
+        List<Comment> comments = mapper.ListSelectComment(map);
 
         log.info("comments = {} ", comments);
 
@@ -170,7 +179,7 @@ public class mybatistest {
         CommentUpdateForm commentUpdateForm = new CommentUpdateForm();
 
         commentUpdateForm.setCommentnumber(7);
-        commentUpdateForm.setUsernumber(10);
+        commentUpdateForm.setCommentnumber(10);
         commentUpdateForm.setCommentcontent("변화란 좋은거야.");
 
         int i = mapper.updateComment(commentUpdateForm);
@@ -182,6 +191,7 @@ public class mybatistest {
         assertTrue(comment.getCommentcontent().equals(commentUpdateForm.getCommentcontent()));
 
     }
+
 
 
 }

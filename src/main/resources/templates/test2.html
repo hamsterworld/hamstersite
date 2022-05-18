@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+
+
+
+       $(document).ready(function(){
+
+            showpaging();
+
+
+            $('#a').click(function(){
+
+
+               $.ajax({
+                type : "GET",
+                contentType: "application/json",
+                url : "/test3",
+                success : function(res){
+                    console.log(res);
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            }); //ajax 끝
+
+        }); //클릭끝
+
+    }) //ready 끝
+
+    let showpaging = function(){
+
+                let content = JSON.stringify({
+                    "boardnumber":10,
+                    "page":1,
+                    "pagesize":10
+                })
+
+                console.log(content);
+
+               //댓글보기
+               $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                data:content,
+                url : "/test2",
+                success : function(res){
+                    console.log(res);
+                    console.log(res.paging.beginPage);
+                    $('#commentpaging').html(commentpaginghtml(res.paging));
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            }); //ajax 끝
+        } //함수끝
+
+    let commentpaginghtml = function(paging){
+
+    let a = '';
+
+    console.log(paging.showPrev);
+
+    if(paging.showPrev){
+            a += '<a href="/"> PREV </a>  '
+        }
+
+    for(let num=paging.beginPage; num<=paging.endPage; num++){
+
+
+        a += '<a href="/test?cpage='+num+'&cpagesize='+paging.pageSize+'&boardnumber=10#hello'+'">'+num+'</a>  '
+
+    }
+
+    console.log(paging.showNext);
+
+    if(paging.showNext){
+            a += '<a href="/"> NEXT </a>  '
+        }
+
+    return a;
+
+    }
+
+</script>
+</head>
+<body>
+<div id="commentpaging">
+</div>
+<a id="a" href="/test2#fo">잘될까욤..</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p id="focus">
+    안녕
+</p>
+
+
+
+
+</body>
+</html>

@@ -3,12 +3,17 @@ package com.example.demo.comment.service;
 import com.example.demo.Mapper.DtoMapper;
 import com.example.demo.dto.Comment;
 import com.example.demo.dto.CommentDeleteForm;
+import com.example.demo.dto.CommentUpdateForm;
 import com.example.demo.dto.CommentWriteForm;
+import com.example.demo.paging.paging;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -18,9 +23,23 @@ public class CommentService {
 
     private final DtoMapper mapper;
 
-    public List<Comment> selectListComment(Integer boardnumber){
+    public List<Comment> selectListComment(Integer boardnumber, Integer page, Integer pagesize){
 
-       return mapper.ListSelectComment(boardnumber);
+        Map map = new HashMap<>();
+
+        int totalcommentcount = mapper.CountComment(boardnumber);
+
+        if(page == null) page = 1;
+        if(pagesize == null) pagesize = 5;
+
+        paging paging = new paging(totalcommentcount,page,pagesize);
+
+        map.put("start",(page-1)*pagesize+1);
+        map.put("end",((page-1)*pagesize+1)+9);
+
+        //model.addAttribute("paging",paging);
+
+        return mapper.ListSelectComment(map);
 
     }
 
@@ -46,5 +65,18 @@ public class CommentService {
 
     }
 
+    public Comment SelectOneComment(Integer commentnumber){
 
+       return mapper.selectComment(commentnumber);
+
+    }
+
+
+    public void UpdateComment(CommentUpdateForm commentUpdateForm) {
+
+        log.info("commentUpdateform = {} ", commentUpdateForm);
+
+        mapper.updateComment(commentUpdateForm);
+
+    }
 }
