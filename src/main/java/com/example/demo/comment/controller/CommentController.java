@@ -27,13 +27,7 @@ public class CommentController {
 
         log.info("testdto = {} ", testdto);
 
-        Integer boardnumber = 10;
-
-        Integer page = null;
-
-        Integer pagesize = null;
-
-        List<Comment> comments = commentService.selectListComment(boardnumber,testdto.getCpage(),testdto.getCpagesize());
+        List<Comment> comments = commentService.selectListComment(testdto.getBoardnumber(),testdto.getCpage(),testdto.getCpagesize());
 
         log.info("targetcomment = {} ",  comments);
 
@@ -76,44 +70,6 @@ public class CommentController {
     public void CommentUpdate(@RequestBody CommentUpdateForm commentUpdateForm){
 
         commentService.UpdateComment(commentUpdateForm);
-
-    }
-
-
-
-    //@PostMapping("/commenttest")
-    public List<LoginUserForm> Commenttest(){
-
-        List<LoginUserForm> loginUserForms = new ArrayList<>();
-
-        LoginUserForm loginUserForm1 = new LoginUserForm();
-        LoginUserForm loginUserForm2 = new LoginUserForm();
-        LoginUserForm loginUserForm3 = new LoginUserForm();
-        LoginUserForm loginUserForm4 = new LoginUserForm();
-        LoginUserForm loginUserForm5 = new LoginUserForm();
-
-        loginUserForm1.setUserId("하하1");
-        loginUserForm1.setUserPassWord("비밀번호지롱1");
-
-        loginUserForm2.setUserId("하하2");
-        loginUserForm2.setUserPassWord("비밀번호지롱2");
-
-        loginUserForm3.setUserId("하하3");
-        loginUserForm3.setUserPassWord("비밀번호지롱3");
-
-        loginUserForm4.setUserId("하하4");
-        loginUserForm4.setUserPassWord("비밀번호지롱4");
-
-        loginUserForm5.setUserId("하하5");
-        loginUserForm5.setUserPassWord("비밀번호지롱5");
-
-        loginUserForms.add(loginUserForm1);
-        loginUserForms.add(loginUserForm2);
-        loginUserForms.add(loginUserForm3);
-        loginUserForms.add(loginUserForm4);
-        loginUserForms.add(loginUserForm5);
-
-        return loginUserForms;
 
     }
 

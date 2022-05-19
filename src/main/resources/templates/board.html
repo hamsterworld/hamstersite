@@ -67,7 +67,7 @@
             <tbody>
             <tr th:each="board : ${Board}">
                 <th scope="row" th:text="${board.BoardNumber}">1</th>
-                <td><a th:text="${board.BoardTitle}" th:href="@{/board/{board.BoardNumber}(board.BoardNumber=${board.BoardNumber},page=${page},pagesize=${paging.pageSize})}">안녕하세요 테스트 게시판입니다.</a></td>
+                <td><a th:text="${board.BoardTitle}" th:href="@{/board/{board.BoardNumber}(board.BoardNumber=${board.BoardNumber},page=${page},pagesize=${paging.pageSize},cpage=1,cpagesize=10)}">안녕하세요 테스트 게시판입니다.</a></td>
                 <td th:text="${board.BoardTime}">hamster</td>
                 <td th:text="${board.Nickname}">234</td>
                 <td th:text="${board.BoardView}">234</td>

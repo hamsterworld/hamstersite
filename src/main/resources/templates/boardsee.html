@@ -8,8 +8,382 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/css/boardcss.css" rel="stylesheet">
-    <script>
+    <link href="/css/comment.css" rel="stylesheet">
+
+    <script th:inline="javascript">
+
        $(document).ready(function(){
+
+        ///////////////댓글 관련 json,js////////////////////
+
+                 $(document).ready(function(){
+                    let listcomment = JSON.stringify({
+                    "boardnumber":[[${boardnumber}]],
+                    "cpage":[[${paging.page}]],
+                    "cpagesize":[[${paging.pageSize}]]
+                })
+
+                console.log('이식중입니다.'+listcomment);
+
+               //댓글보기
+               $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                data : listcomment,
+                url : "/comment",
+                success : function(res){
+                    console.log(res.comments);
+                    $('.comment').html(temHtml(res.comments));
+                    showpaging(listcomment);
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            }); //ajax 끝
+
+
+
+            //댓글 삭제버튼 누르면 삭제
+            $('.comment').on('click','.btndel',function(){
+
+                if(!confirm("정말 삭제하시겠습니까?")) return;
+
+                let cno = $(this).parent().attr('data_cno');
+                let bno = $(this).parent().attr('data_bno');
+
+                let content = JSON.stringify({
+                    "commentnumber":cno,
+                    "boardnumber":bno
+                })
+
+                console.log(content);
+
+                $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/commentdelete",
+                data : content,
+                success : function(res){
+                    showcomment(listcomment);
+                    showpaging(listcomment);
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            });//ajax 끝
+
+            });//click끝
+
+
+            //댓글 쓰기
+
+                $('.btnwrite').click(function(){
+                login(listcomment);
+                });//click끝
+
+                $('.commenttt').on('keyup',function(e){
+                if(e.keyCode===13){
+                login(listcomment)
+                };
+                });//엔터끝
+
+             //댓글쓰기 이벤트 2개끝끝
+
+            //댓글 update하기
+
+               $('.comment').on('click','.btnupd',function(){
+
+                let cno = $(this).parent().parent().parent().attr('data_cno');
+                let bno = $(this).parent().parent().parent().attr('data_bno');
+
+                let origincontent = $(this).parent().next().children('#targetcontent').text();
+
+                console.log(origincontent);
+
+                $('#btn-write-modify').attr('data_cno',cno);
+
+                if($('.modal').css('display') == 'none'){
+                    $('.modal').css('display','block');
+                    $('.modify-writebox-content').children().val(origincontent);
+
+                } //if문 끝
+                 });//click끝
+
+                 $('#btn-write-modify').click(function(){
+                    updateevent(listcomment);
+                 });
+
+
+               $('#updatetextarea').on('keyup',function(e){
+                if(e.keyCode===13){
+                updateevent(listcomment);
+                }
+                }); //엔터끝
+
+
+                $('.close').click(function(){
+                    if($('.modal').css('display') == 'block'){
+                    $('.modal').css('display','none');
+                } //if문 끝
+                }); //닫기끝
+
+
+                //답글 입력창보여주기.
+                 $('.comment').on('click','.btnreply',function(){
+
+                    console.log('ok');
+
+                    $("#replyform").appendTo($(this).parent().parent().parent());
+
+                    $('#replyform').css('display','block');
+
+                 })
+
+                 //답글 쓰기
+                 $('#wrtrepbtn').click(function(){
+
+                     let pcno = $(this).parent().parent().parent().attr('data_pcno');
+                     let targetnickname = $(this).parent().parent().parent().attr('data_nickname');
+                     let replycontent = $('input[name=replycomment]').val()
+
+                     console.info(targetnickname)
+
+                     if(replycontent.trim() == ''){
+                        alert('내용을 입력해주세요.')
+                        $('input[name=replycomment]').focus();
+                        return;
+                     }
+
+                     let reply = JSON.stringify({
+                        "commentcontent":replycontent,
+                        "usernumber":10,
+                        "parentcommentnumber":pcno,
+                        "nickname":"귀여운게죄라면난사형",
+                        "boardnumber":[[${boardnumber}]],
+                        "targetnickname":targetnickname
+                     })
+
+                     console.info(reply)
+
+                    $.ajax({
+                    type : "POST",
+                    contentType: "application/json",
+                    data:reply,
+                    url : "/replyinsert",
+                    success : function(res){
+                        alert('성공적으로 완료하였습니다.');
+                        showcomment(listcomment);
+                        showpaging(listcomment);
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+                }); //ajax 끝
+
+                $('#replyform').css('display','none');
+                $('input[name=replycomment]').val('');
+                $('#replyform').appendTo('body');
+
+                }) //답글쓰기끗
+
+            }); //ready끝
+
+
+
+
+            let temHtml = function(comments){
+            let tmp = '<ul class="comment_ul">';
+
+            comments.forEach(function(comment){
+                    tmp += ' <li data_cno='+comment.commentnumber
+                    tmp += ' data_pcno ='+comment.parentcommentnumber
+                    tmp += ' data_bno='+comment.boardnumber
+                    tmp += ' data_nickname='+comment.nickname
+                    tmp += ' data_uno='+comment.usernumber + '>'
+                    tmp += ' <div class="comment_div"> '
+                    tmp += ' <div class="user_info"> '
+                    if(comment.commentnumber != comment.parentcommentnumber)
+                   {tmp += ' ㄴ'}
+                    tmp += ' <span data_ninkname='+comment.nickname
+                    tmp += ' data_date='+comment.commentdate +'>'
+                    tmp +=   comment.nickname + ' ' + comment.commentdate + '  '
+                    tmp += ' <button class="btndel">삭제</button>'
+                    tmp += ' <button class="btnupd">수정</button>'
+                    tmp += ' <button class="btnreply">답글</button>'
+                    tmp +=   '</span>'
+                    tmp +=   '<div class="commentcontent">'
+                    if(comment.commentnumber != comment.parentcommentnumber)
+                    {tmp +=  '<span id="targetnickname">@'+comment.targetnickname+'</span>&nbsp;&nbsp;'}
+                    tmp +=   '<span id="targetcontent">'+comment.commentcontent+'</span>'
+                    tmp +=   '</div>'
+                    tmp +=   '</div>'
+                    tmp +=   '</div>'
+                    tmp += ' </li>'
+                    tmp += ' <hr class="hr">'
+
+                    console.log(comment);
+
+                });
+
+                return tmp + "</ul>";
+            } //함수끝
+
+
+            let showcomment = function(listcomment){
+
+            $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/comment",
+                data : listcomment,
+                success : function(res){
+                    $('.comment').html(temHtml(res.comments));
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            }); //ajax 끝
+
+            }// 함수끝
+
+            //paging함수
+            let showpaging = function(listcomment){
+               $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                data:listcomment,
+                url : "/test2",
+                success : function(res){
+                    $('#commentpaging').html(commentpaginghtml(res.paging));
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            }); //ajax 끝
+        } //함수끝
+
+
+        //paging rendering 함수
+        let commentpaginghtml = function(paging){
+
+    let a = '';
+
+    console.log(paging.showPrev);
+
+    if(paging.showPrev){
+            a += '<a href="/"> PREV </a>  '
+        }
+
+    for(let num=paging.beginPage; num<=paging.endPage; num++){
+
+
+        a += '<a href="/board/'+[[${boardnumber}]]+'?cpage='+num+'&cpagesize='+paging.pageSize+'&page='+[[${page}]]+'&pagesize='+[[${pagesize}]]+'">'+num+'</a>  '
+
+    }
+
+    console.log(paging.showNext);
+
+    if(paging.showNext){
+            a += '<a href="/"> NEXT </a>  '
+        }
+
+    return a;
+
+    } //paging rendering 함수
+
+
+
+           //게시물쓰기할때 쓰는 함수
+           let login = function(listcomment){
+
+                let commentcontent = $('.commenttt').val();
+
+                console.log(listcomment);
+
+                let content = JSON.stringify({
+                    "commentcontent":commentcontent,
+                    "boardnumber":[[${boardnumber}]],
+                    "usernumber":10,
+                    "nickname":"귀여운게죄라면난사형"
+                })
+
+                if(commentcontent.trim() == ''){
+                        alert('내용을 입력해주세요.')
+                        $('.commenttt').focus();
+                        return;
+                     }
+
+                $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/commentwrite",
+                data : content,
+                success : function(res){
+                    showcomment(listcomment);
+                    showpaging(listcomment);
+
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+            });//ajax 끝
+
+                $('.commenttt').val('');
+
+            }
+            ////
+
+
+            //댓글 수정할때 쓰는함수
+            let updateevent = function(){
+
+                if(!confirm('정말 수정하시겠습니까?')) return;
+
+                let updatecontent = $('.modify-writebox-content').children().val();
+                let cno = $('#btn-write-modify').attr('data_cno');
+
+                let content = JSON.stringify({
+                    "commentnumber":cno,
+                    "commentcontent":updatecontent
+                })
+
+                $.ajax({
+                type : "POST",
+                contentType: "application/json",
+                url : "/commentupdate",
+                data : content,
+                success : function(res){
+                    showcomment(listcomment);
+                    showpaging(listcomment);
+                    $('.modal').css('display','none');
+
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+
+            });//ajax 끝
+
+
+            }
+
+
+////////////////////댓글 관련 js,json끝 /////////////////////////
+
                 $('#deletebutton').on("click",function(){
                 if(!confirm("정말 삭제하시겠습니까?")) {return;};
                 let form = $('#form');
@@ -83,9 +457,21 @@
         </div>
         <hr class="hr">
         <div class="content">
-                    <span th:utext="*{BoardContent}">
+              <span th:utext="*{BoardContent}">
                         여기에 글내용이 들어갈겁니다.여기에 글내용이 들어갈겁니다.여기에 글내용이 들어갈겁니다.여기에 글내용이 들어갈겁니다.
-                    </span>
+              </span>
+            <hr>
+            <div>
+                댓글창입니다. 욕은 쓰지 말아주세요
+            </div>
+            <hr>
+            <div class="comment" id="comment">
+            </div>
+            <input type="text" class="commenttt">
+            <button type="button" class="btnwrite">댓글 추가</button>
+            <div class="paging" id="commentpaging">
+
+            </div>
         </div>
         </th:object>
         <form action="" method="post" id="form">
@@ -100,5 +486,35 @@
     </div>
 </div>
 </div>
+
+<div id="modalWin" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>
+        <h2> | 댓글 수정</h2>
+        <div id="modify-writebox">
+            <div class="commenter commenter-writebox"></div>
+            <div class="modify-writebox-content">
+                <textarea name="" id="updatetextarea" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
+            </div>
+            <div id="modify-writebox-bottom">
+                <div class="register-box">
+                    <a href="#" class="btn" id="btn-write-modify">등록</a>
+                </div>
+            </div>
+        </div>
+        </p>
+    </div>
+</div>
+
+<div id="replyform" style="display:none">
+    <hr>
+    <span>ㄴ</span>
+    <input type="text" name="replycomment">
+    <button id="wrtrepbtn" type="button">등록</button>
+</div>
+
+
 </body>
 </html>

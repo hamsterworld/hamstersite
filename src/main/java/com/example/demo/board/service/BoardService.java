@@ -67,6 +67,38 @@ public class BoardService {
 
     }
 
+    public Board BoardSee(Long BoardNumber,Integer BoardNumberint,Model model,Integer cpage,Integer cpagesize){
+
+
+
+        Board board = mapper.searchOneBoard(BoardNumber);
+
+        User user = mapper.searchOneUser(board.getUserNumber());
+
+        int i = mapper.UpdateViewBoard(BoardNumber);
+
+
+        //comment paging처리
+
+        if(cpage==null) cpage = 1;
+        if(cpagesize==null) cpagesize = 10;
+
+        int countComment = mapper.CountComment(BoardNumberint);
+
+        paging paging = new paging(countComment, cpage, cpagesize);
+
+        log.info("paging = {} ",paging);
+
+        model.addAttribute("paging",paging);
+        model.addAttribute("boardnumber",BoardNumber);
+
+        model.addAttribute("Board",board);
+        model.addAttribute("User",user);
+
+        return board;
+
+    }
+
     public Board BoardSee(Long BoardNumber,Model model){
 
         Board board = mapper.searchOneBoard(BoardNumber);

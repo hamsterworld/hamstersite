@@ -36,8 +36,8 @@ public class CommentService {
 
         map.put("start",(page-1)*pagesize+1);
         map.put("end",((page-1)*pagesize+1)+9);
+        map.put("boardnumber",boardnumber);
 
-        //model.addAttribute("paging",paging);
 
         return mapper.ListSelectComment(map);
 
