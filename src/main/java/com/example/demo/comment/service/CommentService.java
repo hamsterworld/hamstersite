@@ -30,7 +30,7 @@ public class CommentService {
         int totalcommentcount = mapper.CountComment(boardnumber);
 
         if(page == null) page = 1;
-        if(pagesize == null) pagesize = 5;
+        if(pagesize == null) pagesize = 10;
 
         paging paging = new paging(totalcommentcount,page,pagesize);
 

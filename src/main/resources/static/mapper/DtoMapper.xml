@@ -23,8 +23,8 @@
     <select id="ListSelectComment" parameterType="java.util.HashMap" resultType="com.example.demo.dto.Comment">
         select * from (select ROWNUM RN, A.* from (select commentnumber,boardnumber,usernumber,nickname,
         commentcontent,commentdate,nvl(parentcommentnumber,commentnumber) as parentcommentnumber,
-        targetnickname from commenttable order by parentcommentnumber asc,commentnumber asc) A)
-        WHERE RN BETWEEN #{start} AND #{end}
+        targetnickname from commenttable order by parentcommentnumber desc,commentnumber desc) A)
+        WHERE RN BETWEEN #{start} AND #{end} order by RN desc
     </select>
     <insert id="insertComment" parameterType="com.example.demo.dto.Comment">
         insert into commenttable (commentnumber,boardnumber,usernumber,nickname,commentcontent)

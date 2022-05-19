@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,14 +23,24 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comment")
-    public HashMap<String, Object> CommentSee(){
+    public HashMap<String, Object> CommentSee(@RequestBody testdto testdto){
+
+        log.info("testdto = {} ", testdto);
+
         Integer boardnumber = 10;
+
         Integer page = null;
+
         Integer pagesize = null;
-        List<Comment> comments = commentService.selectListComment(boardnumber,page,pagesize);
+
+        List<Comment> comments = commentService.selectListComment(boardnumber,testdto.getCpage(),testdto.getCpagesize());
+
         log.info("targetcomment = {} ",  comments);
+
         HashMap<String, Object> Map = new HashMap<>();
+
         Map.put("comments",comments);
+
         return Map;
     }
 

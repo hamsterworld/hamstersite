@@ -42,7 +42,10 @@ public class test {
 
         paging paging = new paging(countComment, cpage, cpagesize);
 
+        log.info("paging = {} ",paging);
+
         model.addAttribute("paging",paging);
+        model.addAttribute("boardnumber",boardnumber);
 
         return "test";
 
@@ -69,7 +72,7 @@ public class test {
     @ResponseBody
     public Map<String,Object> test3(@RequestBody testdto testdto){
 
-        log.info("testdto = {} ", testdto);
+        log.info("test2dto = {} ", testdto);
 
         Map map = new HashMap<>();
 
@@ -77,13 +80,15 @@ public class test {
 
         log.info("댓글이 이렇게 많이 썻어? ={}",totalcommentcount);
 
-        if(testdto.getPage() == null) testdto.setPage(1);
-        if(testdto.getPagesize() == null) testdto.setPagesize(10);
+        if(testdto.getCpage() != null) testdto.setCpage(2);
+        if(testdto.getCpagesize() != null) testdto.setCpagesize(10);
 
-        paging paging = new paging(totalcommentcount,testdto.getPage(),testdto.getPagesize());
+        log.info("testdto = {} ", testdto);
 
-        map.put("start",(testdto.getPage()-1)*testdto.getPagesize()+1);
-        map.put("end",((testdto.getPage()-1)*testdto.getPagesize()+1)+9);
+        paging paging = new paging(totalcommentcount,testdto.getCpage(),testdto.getCpagesize());
+
+        map.put("start",(testdto.getCpage()-1)*testdto.getCpagesize()+1);
+        map.put("end",((testdto.getCpage()-1)*testdto.getCpagesize()+1)+9);
         map.put("paging",paging);
 
         return map;
