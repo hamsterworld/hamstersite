@@ -26,7 +26,8 @@ public class BoardSeeController {
                            @RequestParam Integer page,
                            @RequestParam Integer pagesize,
                            @RequestParam Integer cpage,
-                           @RequestParam Integer cpagesize){
+                           @RequestParam Integer cpagesize,
+                           @RequestParam String noview){
 
         Long BoradNumberL = new Long(BoardNumber);
 
@@ -36,7 +37,7 @@ public class BoardSeeController {
         model.addAttribute("pagesize",pagesize);
         model.addAttribute("boardnumber",BoardNumber);
 
-        boardService.BoardSee(BoradNumberL,BoardNumber,model,cpage,cpagesize);
+        boardService.BoardSee(BoradNumberL,BoardNumber,model,cpage,cpagesize,noview);
 
         return "boardSee";
     }

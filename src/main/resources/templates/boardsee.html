@@ -23,7 +23,6 @@
                     "cpagesize":[[${paging.pageSize}]]
                 })
 
-                console.log('이식중입니다.'+listcomment);
 
                //댓글보기
                $.ajax({
@@ -157,13 +156,17 @@
 
                  //답글 쓰기
                  $('#wrtrepbtn').click(function(){
-                    replycomment();
+                     let pcno = $(this).parent().parent().parent().attr('data_pcno');
+                     let targetnickname = $(this).parent().parent().parent().attr('data_nickname');
+                    replycomment(pcno,targetnickname,listcomment);
                  }) //답글쓰기끗
 
                   //답글 쓰기
                  $('input[name=replycomment]').on('keyup',function(e){
                 if(e.keyCode===13){
-                    replycomment();
+                     let pcno = $(this).parent().parent().parent().attr('data_pcno');
+                     let targetnickname = $(this).parent().parent().parent().attr('data_nickname');
+                    replycomment(pcno,targetnickname,listcomment);
                 }
                 }); //엔터끝
 
@@ -289,8 +292,8 @@
                 let content = JSON.stringify({
                     "commentcontent":commentcontent,
                     "boardnumber":[[${boardnumber}]],
-                    "usernumber":10,
-                    "nickname":"귀여운게죄라면난사형"
+                    "usernumber":[[${User.UserNumber}]],
+                    "nickname":[[${User.NickName}]]
                 })
 
                 if(commentcontent.trim() == ''){
@@ -360,13 +363,13 @@
             }//수정함수끝
 
 
-            let replycomment = function(){
+            let replycomment = function(pcno,targetnickname,listcomment){
 
-                     let pcno = $(this).parent().parent().parent().attr('data_pcno');
-                     let targetnickname = $(this).parent().parent().parent().attr('data_nickname');
+
                      let replycontent = $('input[name=replycomment]').val()
 
-                     console.info(targetnickname)
+                     console.log(pcno)
+                     console.log(targetnickname)
 
                      if(replycontent.trim() == ''){
                         alert('내용을 입력해주세요.')
@@ -376,14 +379,14 @@
 
                      let reply = JSON.stringify({
                         "commentcontent":replycontent,
-                        "usernumber":10,
+                        "usernumber":[[${User.UserNumber}]],
                         "parentcommentnumber":pcno,
-                        "nickname":"귀여운게죄라면난사형",
+                        "nickname":[[${User.NickName}]],
                         "boardnumber":[[${boardnumber}]],
                         "targetnickname":targetnickname
                      })
 
-                     console.info(reply)
+                     console.info('안보여?' + reply);
 
                     $.ajax({
                     type : "POST",

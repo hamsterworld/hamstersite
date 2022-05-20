@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -58,15 +59,6 @@ public class test {
 
     }
 
-    @GetMapping("/test3")
-    @ResponseBody
-    public String test3(){
-
-        return "json이 잘되는겁니다.";
-
-    }
-
-
 
     @PostMapping("/test2")
     @ResponseBody
@@ -92,6 +84,22 @@ public class test {
         map.put("paging",paging);
 
         return map;
+
+    }
+
+    @GetMapping("/test3")
+    public String test3(HttpSession session,Model model){
+
+        log.info("session = {} " , session);
+
+        log.info("User = {} ", session.getAttribute("LoginUser"));
+
+        String english = "hihihih";
+
+        model.addAttribute("LoginUser",session.getAttribute("LoginUser"));
+        model.addAttribute("english",english);
+
+        return "test3";
 
     }
 

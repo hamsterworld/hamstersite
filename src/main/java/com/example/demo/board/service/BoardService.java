@@ -24,7 +24,6 @@ public class BoardService {
     private final Dao dao;
     private final DtoMapper mapper;
 
-
     public void BoardSee(Integer page,Integer pagesize,Model model){
 
         Map map = new HashMap<>();
@@ -67,7 +66,7 @@ public class BoardService {
 
     }
 
-    public Board BoardSee(Long BoardNumber,Integer BoardNumberint,Model model,Integer cpage,Integer cpagesize){
+    public Board BoardSee(Long BoardNumber,Integer BoardNumberint,Model model,Integer cpage,Integer cpagesize,String noview){
 
 
 
@@ -75,8 +74,9 @@ public class BoardService {
 
         User user = mapper.searchOneUser(board.getUserNumber());
 
-        int i = mapper.UpdateViewBoard(BoardNumber);
-
+        if(noview == null || !noview.equals("true")) {
+            int i = mapper.UpdateViewBoard(BoardNumber);
+        }
 
         //comment paging처리
 
