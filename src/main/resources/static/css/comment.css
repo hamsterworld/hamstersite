@@ -109,3 +109,11 @@ textarea {
     text-decoration: none;
     cursor: pointer;
 }
+
+#replyform{
+display:none;
+}
+
+#locloc{
+display:none;
+}

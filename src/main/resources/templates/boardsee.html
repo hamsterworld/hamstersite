@@ -93,12 +93,14 @@
 
              //댓글쓰기 이벤트 2개끝끝
 
-            //댓글 update하기
+            //댓글 update창 보여주기
 
-               $('.comment').on('click','.btnupd',function(){
+            $('.comment').on('click','.btnupd',function(){
 
-                let cno = $(this).parent().parent().parent().attr('data_cno');
-                let bno = $(this).parent().parent().parent().attr('data_bno');
+                let cno = $(this).parent().parent().parent().parent().attr('data_cno');
+                let bno = $(this).parent().parent().parent().parent().attr('data_bno');
+
+                console.log('너가 어떻게나오냐'+cno);
 
                 let origincontent = $(this).parent().next().children('#targetcontent').text();
 
@@ -111,7 +113,12 @@
                     $('.modify-writebox-content').children().val(origincontent);
 
                 } //if문 끝
+
+                $('#updatetextarea').focus();
+
                  });//click끝
+
+                //댓글 update하기
 
                  $('#btn-write-modify').click(function(){
                     updateevent(listcomment);
@@ -135,62 +142,30 @@
                 //답글 입력창보여주기.
                  $('.comment').on('click','.btnreply',function(){
 
-                    console.log('ok');
-
                     $("#replyform").appendTo($(this).parent().parent().parent());
-
+                    if($('.modal').css('display') == 'none')
                     $('#replyform').css('display','block');
-
+                    $('input[name=replycomment]').focus();
                  })
+
+
+                 //답글창 닫기
+                 $('#canrepbtn').click(function(){
+                    $('#replyform').css('display','none');
+                 })
+
 
                  //답글 쓰기
                  $('#wrtrepbtn').click(function(){
+                    replycomment();
+                 }) //답글쓰기끗
 
-                     let pcno = $(this).parent().parent().parent().attr('data_pcno');
-                     let targetnickname = $(this).parent().parent().parent().attr('data_nickname');
-                     let replycontent = $('input[name=replycomment]').val()
-
-                     console.info(targetnickname)
-
-                     if(replycontent.trim() == ''){
-                        alert('내용을 입력해주세요.')
-                        $('input[name=replycomment]').focus();
-                        return;
-                     }
-
-                     let reply = JSON.stringify({
-                        "commentcontent":replycontent,
-                        "usernumber":10,
-                        "parentcommentnumber":pcno,
-                        "nickname":"귀여운게죄라면난사형",
-                        "boardnumber":[[${boardnumber}]],
-                        "targetnickname":targetnickname
-                     })
-
-                     console.info(reply)
-
-                    $.ajax({
-                    type : "POST",
-                    contentType: "application/json",
-                    data:reply,
-                    url : "/replyinsert",
-                    success : function(res){
-                        alert('성공적으로 완료하였습니다.');
-                        showcomment(listcomment);
-                        showpaging(listcomment);
-                },
-                error : function(XMLHttpRequest, textStatus, errorThrown){
-                    console.log(textStatus);
-                    console.log(errorThrown);
-                    alert("오류가 발생했습니다.")
+                  //답글 쓰기
+                 $('input[name=replycomment]').on('keyup',function(e){
+                if(e.keyCode===13){
+                    replycomment();
                 }
-                }); //ajax 끝
-
-                $('#replyform').css('display','none');
-                $('input[name=replycomment]').val('');
-                $('#replyform').appendTo('body');
-
-                }) //답글쓰기끗
+                }); //엔터끝
 
             }); //ready끝
 
@@ -236,7 +211,8 @@
 
 
             let showcomment = function(listcomment){
-
+                $('#replyform').css('display','none')
+                $('#replyform').appendTo('#locloc')
             $.ajax({
                 type : "POST",
                 contentType: "application/json",
@@ -347,12 +323,14 @@
 
 
             //댓글 수정할때 쓰는함수
-            let updateevent = function(){
+            let updateevent = function(listcomment){
 
                 if(!confirm('정말 수정하시겠습니까?')) return;
 
                 let updatecontent = $('.modify-writebox-content').children().val();
                 let cno = $('#btn-write-modify').attr('data_cno');
+
+                console.log(cno);
 
                 let content = JSON.stringify({
                     "commentnumber":cno,
@@ -379,7 +357,58 @@
             });//ajax 끝
 
 
-            }
+            }//수정함수끝
+
+
+            let replycomment = function(){
+
+                     let pcno = $(this).parent().parent().parent().attr('data_pcno');
+                     let targetnickname = $(this).parent().parent().parent().attr('data_nickname');
+                     let replycontent = $('input[name=replycomment]').val()
+
+                     console.info(targetnickname)
+
+                     if(replycontent.trim() == ''){
+                        alert('내용을 입력해주세요.')
+                        $('input[name=replycomment]').focus();
+                        return;
+                     }
+
+                     let reply = JSON.stringify({
+                        "commentcontent":replycontent,
+                        "usernumber":10,
+                        "parentcommentnumber":pcno,
+                        "nickname":"귀여운게죄라면난사형",
+                        "boardnumber":[[${boardnumber}]],
+                        "targetnickname":targetnickname
+                     })
+
+                     console.info(reply)
+
+                    $.ajax({
+                    type : "POST",
+                    contentType: "application/json",
+                    data:reply,
+                    url : "/replyinsert",
+                    success : function(res){
+                        alert('성공적으로 완료하였습니다.');
+                        showcomment(listcomment);
+                        showpaging(listcomment);
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                    alert("오류가 발생했습니다.")
+                }
+                }); //ajax 끝
+
+                $('#replyform').css('display','none');
+                $('input[name=replycomment]').val('');
+                $('#replyform').appendTo('body');
+
+                } //답글쓰기끗
+
+
 
 
 ////////////////////댓글 관련 js,json끝 /////////////////////////
@@ -487,6 +516,7 @@
 </div>
 </div>
 
+
 <div id="modalWin" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
@@ -508,13 +538,15 @@
     </div>
 </div>
 
-<div id="replyform" style="display:none">
-    <hr>
-    <span>ㄴ</span>
-    <input type="text" name="replycomment">
-    <button id="wrtrepbtn" type="button">등록</button>
+<div id="locloc">
+    <div id="replyform">
+        <hr>
+        <span>ㄴ</span>
+        <input type="text" name="replycomment">
+        <button id="wrtrepbtn" type="button">등록</button>
+        <button id="canrepbtn" type="button">취소</button>
+    </div>
 </div>
-
 
 </body>
 </html>
